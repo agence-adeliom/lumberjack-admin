@@ -10,19 +10,19 @@ use WP_Block_Editor_Context;
 
 class RestrictionsHooks
 {
-    private static function isRegex(string $regex)
+    private static function isRegex(string $regex): bool
     {
-        return preg_match("/^\/[\s\S]+\/$/", $regex);
+        return (bool) preg_match("/^\/[\s\S]+\/$/", $regex);
     }
 
-    private static function isExcludePattern(string $pattern)
+    private static function isExcludePattern(string $pattern): bool
     {
         return strpos($pattern, '!') === 0;
     }
 
-    private static function isWildcardPattern(string $pattern)
+    private static function isWildcardPattern(string $pattern): bool
     {
-        return strpos($pattern, '*') == (strlen($pattern) - 1);
+        return strpos($pattern, '*') === (strlen($pattern) - 1);
     }
 
     private static function match(string $blockName, string $pattern): bool
@@ -51,7 +51,7 @@ class RestrictionsHooks
      * Restriction are defined in config files
      *
      * @param bool|array $allowed_block_types
-     * @param WP_Block_Editor_Context $post
+     * @param WP_Block_Editor_Context $postContext
      * @return array
      */
     public static function allowedBlock($allowed_block_types, WP_Block_Editor_Context $postContext): array
@@ -87,17 +87,19 @@ class RestrictionsHooks
             }
         }
 
-
-        foreach ($postSettings["blocks"] as $pattern) {
-            $isExcludePattern = self::isExcludePattern($pattern);
-            foreach ($allBlock as $block) {
-                if (self::match($block, $pattern) && !$isExcludePattern) {
-                    $blocks[$block] = true;
-                } elseif (!self::match($block, $pattern) && $isExcludePattern) {
-                    $blocks[$block] = false;
+        if($postSettings){
+            foreach ($postSettings["blocks"] as $pattern) {
+                $isExcludePattern = self::isExcludePattern($pattern);
+                foreach ($allBlock as $block) {
+                    if (self::match($block, $pattern) && !$isExcludePattern) {
+                        $blocks[$block] = true;
+                    } elseif (!self::match($block, $pattern) && $isExcludePattern) {
+                        $blocks[$block] = false;
+                    }
                 }
             }
         }
+
 
         return array_keys(array_filter($blocks));
     }

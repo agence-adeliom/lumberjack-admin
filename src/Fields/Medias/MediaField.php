@@ -2,7 +2,6 @@
 
 namespace Adeliom\Lumberjack\Admin\Fields\Medias;
 
-use Adeliom\Lumberjack\Admin\Fields\VideoField;
 use Extended\ACF\ConditionalLogic;
 use Extended\ACF\Fields\Group;
 use Extended\ACF\Fields\Select;

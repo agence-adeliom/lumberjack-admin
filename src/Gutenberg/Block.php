@@ -13,9 +13,9 @@ use Extended\ACF\Location;
 class Block
 {
     /**
-     * @var \ArrayIterator<int, Field>
+     * @var \Traversable|null
      */
-    public array $fields;
+    public ?\Traversable $fields;
     /**
      * The directory name of the block.
      *
@@ -205,11 +205,11 @@ class Block
     /**
      * User defined ACF fields
      *
-     * @return  \ArrayIterator<int, Field>|array
+     * @return \Traversable|null
      */
-    protected function registerFields(): \Traversable
+    protected function registerFields(): ?\Traversable
     {
-        return [];
+        return null;
     }
 
     /**
@@ -219,7 +219,11 @@ class Block
      */
     public function getFields(): array
     {
-        return iterator_to_array($this->fields, false);
+        if($this->fields){
+            return iterator_to_array($this->fields, false);
+        }
+
+        return [];
     }
 
     /**

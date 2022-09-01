@@ -65,7 +65,7 @@ class GutenbergBlock
     public static function getAllBlocksList(): array
     {
         $registry = \WP_Block_Type_Registry::get_instance();
-        return $registry ? array_values(array_keys($registry->get_all_registered())) : [];
+        return array_values(array_keys($registry->get_all_registered()));
     }
 
     /**
@@ -79,13 +79,13 @@ class GutenbergBlock
 
     /**
      * @param int|\WP_Post $post
-     * @return false
+     * @return array|null
      */
-    public static function getObjectSettings($post, $postType = null)
+    public static function getObjectSettings($post, $postType = null): ?array
     {
         $config = Config::get('gutenberg.templates', []);
         if (empty($config)) {
-            return;
+            return null;
         }
 
         if (!$postType) {
