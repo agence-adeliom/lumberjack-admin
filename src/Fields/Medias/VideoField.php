@@ -1,6 +1,6 @@
 <?php
 
-namespace Adeliom\Lumberjack\Admin\Fields;
+namespace Adeliom\Lumberjack\Admin\Fields\Medias;
 
 use Adeliom\Lumberjack\Admin\Fields\Choices\TrueFalseField;
 use Adeliom\Lumberjack\Admin\Fields\Medias\ImageField;

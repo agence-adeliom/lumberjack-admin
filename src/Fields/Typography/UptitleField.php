@@ -1,6 +1,6 @@
 <?php
 
-namespace Adeliom\Lumberjack\Admin\Fields;
+namespace Adeliom\Lumberjack\Admin\Fields\Typography;
 
 use Extended\ACF\Fields\Text;
 
