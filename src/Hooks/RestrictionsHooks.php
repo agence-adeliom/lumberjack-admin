@@ -87,7 +87,7 @@ class RestrictionsHooks
             }
         }
 
-        if($postSettings){
+        if ($postSettings) {
             foreach ($postSettings["blocks"] as $pattern) {
                 $isExcludePattern = self::isExcludePattern($pattern);
                 foreach ($allBlock as $block) {

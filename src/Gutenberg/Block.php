@@ -219,7 +219,7 @@ class Block
      */
     public function getFields(): array
     {
-        if($this->fields){
+        if ($this->fields) {
             return iterator_to_array($this->fields, false);
         }
 

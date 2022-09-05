@@ -20,7 +20,7 @@ class TemplateHooks
             return;
         }
         $settings = GutenbergBlock::getObjectSettings($_GET['post'] ?? null, $_GET['post_type'] ?? "post");
-        if($settings) {
+        if ($settings) {
             if (!empty($settings["template"]) || !empty($settings["template_lock"])) {
                 $postTypeObject = get_post_type_object($settings["post_type"]);
                 foreach (['template', 'template_lock'] as $prop) {
@@ -49,7 +49,7 @@ class TemplateHooks
         }
 
         $settings = GutenbergBlock::getObjectSettings($_GET['post'] ?? null, $postType);
-        if($settings){
+        if ($settings) {
             return $settings["enabled"] ?? $canEdit;
         }
         return $canEdit;
