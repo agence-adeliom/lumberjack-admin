@@ -6,6 +6,7 @@ repository:
   has_projects: false
   has_wiki: false
   has_downloads: false
+  default_branch: 1.x
 
 # Labels: define labels for Issues and Pull Requests
 labels:
