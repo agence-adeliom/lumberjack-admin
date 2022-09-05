@@ -1,4 +1,5 @@
 repository:
+  name: lumberjack-admin
   description: [READ-ONLY] Register WordPress admin and block interfaces into Lumberjack
   topics: hooks wordpress timber lumberjack acf
   has_issues: true
