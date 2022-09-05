@@ -13,7 +13,7 @@ abstract class ImageField
      */
     public static function image(string $width = "", string $height = "", string $title = "Image", ?string $key = null): Image
     {
-        return Image::make(__($title), $key ?? self::IMAGE)
+        return Image::make(__($title, 'lumberjack-admin'), $key ?? self::IMAGE)
             ->instructions(!empty($width) ? ("Ratio recommandé : " . $width . "x" . $height) : "")
             ->library("all")
             ->returnFormat('array');

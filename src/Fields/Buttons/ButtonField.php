@@ -30,9 +30,9 @@ abstract class ButtonField
             ->fields([
                 Select::make("Types", self::BUTTON_TYPE)
                     ->choices([
-                        "primary"   => __("Primaire"),
-                        "secondary" => __("Secondaire"),
-                        "outline"   => __("Outline"),
+                        "primary"   => __("Primaire", 'lumberjack-admin'),
+                        "secondary" => __("Secondaire", 'lumberjack-admin'),
+                        "outline"   => __("Outline", 'lumberjack-admin'),
                     ])
                     ->defaultValue("primary")
                     ->instructions($typeInstructions),
@@ -46,17 +46,17 @@ abstract class ButtonField
     public static function group(bool $withType = false): Group
     {
         $fields = [
-            self::link(__("Bouton principal"), self::BUTTON_ONE),
-            self::link(__("Bouton secondaire"), self::BUTTON_TWO),
+            self::link(__("Bouton principal", 'lumberjack-admin'), self::BUTTON_ONE),
+            self::link(__("Bouton secondaire", 'lumberjack-admin'), self::BUTTON_TWO),
         ];
 
         if ($withType) {
             $fields = [
-                self::types(__("Bouton 1"), self::BUTTON_ONE),
-                self::types(__("Bouton 2"), self::BUTTON_TWO),
+                self::types(__("Bouton 1", 'lumberjack-admin'), self::BUTTON_ONE),
+                self::types(__("Bouton 2", 'lumberjack-admin'), self::BUTTON_TWO),
             ];
         }
 
-        return Group::make(__("Boutons"), self::BUTTONS)->fields($fields);
+        return Group::make(__("Boutons", 'lumberjack-admin'), self::BUTTONS)->fields($fields);
     }
 }

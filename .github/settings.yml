@@ -1,0 +1,28 @@
+repository:
+  description: [READ-ONLY] Register WordPress admin and block interfaces into Lumberjack
+  topics: hooks wordpress timber lumberjack acf
+  has_issues: true
+  has_projects: false
+  has_wiki: false
+  has_downloads: false
+
+# Labels: define labels for Issues and Pull Requests
+labels:
+  - name: npm
+    color: fef2c0
+  - name: github-actions
+    color: e99695
+  - name: composer
+    color: bfe5bf
+  - name: dependencies
+    color: b4a8d1
+  - name: direct
+    color: 5319e7
+  - name: indirect
+    color: eeeeee
+  - name: production
+    color: ff7619
+  - name: development
+    color: e99695
+  - name: security
+    color: fbca04

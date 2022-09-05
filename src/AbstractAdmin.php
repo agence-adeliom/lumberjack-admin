@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Adeliom\Lumberjack\Admin;
 
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use Traversable;
 use Extended\ACF\Fields\Field;
 use Extended\ACF\Location;
@@ -14,30 +15,6 @@ use Extended\ACF\Location;
  */
 abstract class AbstractAdmin
 {
-    /**
-     * Register the admin Block
-     * @return void
-     */
-    public static function register(): void
-    {
-        if (function_exists('acf_add_options_page') && static::hasOptionPage()) {
-            $options = static::setupOptionPage();
-            acf_add_options_page($options);
-        }
-
-        register_extended_field_group([
-            'title' => static::getTitle(),
-            'style' => static::getStyle(),
-            'fields' => iterator_to_array(static::getFields(), false),
-            'location' => iterator_to_array(static::getLocation(), false),
-            'position' => static::getPosition(),
-            'label_placement' => static::getLabelPlacement(),
-            'instruction_placement' => static::getInstructionPlacement(),
-            'hide_on_screen' => static::getHideOnScreen(),
-            'menu_order' => static::getMenuOrder(),
-        ]);
-    }
-
     /**
      * Visible in metabox handle
      * @return string
@@ -54,7 +31,13 @@ abstract class AbstractAdmin
      * An list containing 'rule groups' where each 'rule group' is an array containing 'rules'. Each group is considered an 'or', and each rule is considered an 'and'.
      * @return \ArrayIterator<int, Location>
      */
-    abstract public static function getLocation(): Traversable;
+    public static function getLocation(): Traversable
+    {
+        if (function_exists('acf_add_options_page') && static::hasOptionPage()) {
+            yield Location::where('options_page', static::getSlug());
+        }
+        return [];
+    }
 
     /**
      * Get the admin block style
@@ -110,9 +93,7 @@ abstract class AbstractAdmin
             'categories',
             'tags',
             'send-trackbacks',
-            'featured_image',
-            //'permalink',
-            //'revisions',
+            'featured_image'
         ];
     }
 
@@ -141,11 +122,44 @@ abstract class AbstractAdmin
     public static function setupOptionPage(): array
     {
         return [
-            'page_title' => "Options",
-            'menu_title' => 'Options',
-            'menu_slug'  => "options",
+            'page_title' => static::getTitle(),
+            'menu_title' => static::getTitle(),
+            'menu_slug'  => static::getSlug(),
             'capability' => 'edit_theme_options',
             'autoload' => true
         ];
+    }
+
+    /**
+     * Return the slug of your admin
+     * @return string
+     */
+    public static function getSlug(): string
+    {
+        return (new AsciiSlugger())->slug(static::getTitle())->toString();
+    }
+
+    /**
+     * Register the admin Block
+     * @return void
+     */
+    public static function register(): void
+    {
+        if (function_exists('acf_add_options_page') && static::hasOptionPage()) {
+            $options = static::setupOptionPage();
+            acf_add_options_page($options);
+        }
+
+        register_extended_field_group([
+            'title' => static::getTitle(),
+            'style' => static::getStyle(),
+            'fields' => iterator_to_array(static::getFields(), false),
+            'location' => iterator_to_array(static::getLocation(), false),
+            'position' => static::getPosition(),
+            'label_placement' => static::getLabelPlacement(),
+            'instruction_placement' => static::getInstructionPlacement(),
+            'hide_on_screen' => static::getHideOnScreen(),
+            'menu_order' => static::getMenuOrder(),
+        ]);
     }
 }
