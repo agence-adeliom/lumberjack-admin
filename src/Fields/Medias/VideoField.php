@@ -22,10 +22,10 @@ abstract class VideoField
      */
     public static function video(): Group
     {
-        return Group::make(__("Vidéo"), self::VIDEO)
+        return Group::make(__("Vidéo", 'lumberjack-admin'), self::VIDEO)
             ->fields([
 
-                ImageField::image("", "", __("Vignette"), self::THUMBNAIL)
+                ImageField::image("", "", __("Vignette", 'lumberjack-admin'), self::THUMBNAIL)
                     ->required(),
 
                 TrueFalseField::make("Vidéo youtube ?", self::IS_YOUTUBE),

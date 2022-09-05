@@ -11,16 +11,6 @@ class GutenbergBlock
     /**
      * @var string
      */
-    public const DISALLOWED_BLOCKS = 'disallowed_blocks';
-
-    /**
-     * @var string
-     */
-    public const ALLOWED_BLOCKS = 'allowed_blocks';
-
-    /**
-     * @var string
-     */
     protected const CORE_BLOCK_PREFIX = 'core';
 
     /**

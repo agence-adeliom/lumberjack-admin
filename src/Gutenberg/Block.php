@@ -180,7 +180,7 @@ class Block
         $this->icon = $settings['icon'];
         $this->post_types = $settings['post_types'];
         // Set ACF Fields to the block.
-        $this->fields = $this->registerFields();
+        $this->fields = $this->getFields();
     }
 
     /**
@@ -207,23 +207,9 @@ class Block
      *
      * @return \Traversable|null
      */
-    protected function registerFields(): ?\Traversable
+    protected function getFields(): ?\Traversable
     {
         return null;
-    }
-
-    /**
-     * Get the block ACF fields
-     *
-     * @return Field[]
-     */
-    public function getFields(): array
-    {
-        if ($this->fields) {
-            return iterator_to_array($this->fields, false);
-        }
-
-        return [];
     }
 
     /**
@@ -274,6 +260,26 @@ class Block
     public function getIcon(): string
     {
         return $this->icon;
+    }
+
+    public function iconExtension(): string
+    {
+        return '.svg';
+    }
+
+    public function previewExtension(): string
+    {
+        return '.jpg';
+    }
+
+    public function fileExtension(): string
+    {
+        return '.html.twig';
+    }
+
+    public function isValid(): bool
+    {
+        return class_exists("Timber");
     }
 
     /**
@@ -385,7 +391,10 @@ class Block
     public function init(): void
     {
         if (function_exists('acf_register_block_type') && function_exists('register_extended_field_group')) {
-            $fields = $this->getFields();
+            $fields = [];
+            if ($this->fields) {
+                $fields = iterator_to_array($this->fields, false);
+            }
             acf_register_block_type($this->getBlockData());
             if (!empty($fields)) {
                 register_extended_field_group([

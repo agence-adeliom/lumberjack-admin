@@ -15,6 +15,6 @@ class Instructions
      */
     public static function image(int $width, int $height): string
     {
-        return (string) apply_filters('adeliom_image_instruction', sprintf(__("Ratio d'image recommandée :  %s pixels de largeur et %s de pixels de hauteur", 'adeliom'), $width, $height), $width, $height);
+        return (string) apply_filters('adeliom_image_instruction', sprintf(__("Ratio d'image recommandée :  %s pixels de largeur et %s de pixels de hauteur", 'lumberjack-admin'), $width, $height), $width, $height);
     }
 }

@@ -10,13 +10,13 @@ abstract class AbstractBlock extends Block
     /**
      * @var mixed|string
      */
-    public $dir_preview;
+    public mixed $dir_preview;
     /**
      * @var mixed|string
      */
-    public $dir_icon;
-    public string $template = "";
+    public mixed $dir_icon;
 
+    public string $template = "";
     public string $preview = "";
 
     public function __construct(array $settings)
@@ -28,32 +28,10 @@ abstract class AbstractBlock extends Block
         $this->dir_icon = $settings['dir_icon'] ?? "assets/images/admin/blocks";
         $tpl = $this->name;
         $tpl = str_replace("-block", "", $tpl);
-
         $this->template = sprintf('%s/%s%s', $this->dir, $tpl, $this->fileExtension());
         $this->preview = sprintf('%s/%s/preview%s', $this->dir_preview, $tpl, $this->previewExtension());
-
         $iconFile = get_template_directory() . sprintf('/%s/%s/picto%s', $this->dir_icon, $tpl, $this->iconExtension());
-        $this->icon = file_exists($iconFile) ? file_get_contents($iconFile) : parent::getIcon();
-    }
-
-    public function iconExtension(): string
-    {
-        return '.svg';
-    }
-
-    public function previewExtension(): string
-    {
-        return '.jpg';
-    }
-
-    public function fileExtension(): string
-    {
-        return '.html.twig';
-    }
-
-    public function isValid(): bool
-    {
-        return class_exists("Timber");
+        $this->icon = file_exists($iconFile) ? file_get_contents($iconFile) : $this->getIcon();
     }
 
     public function renderBlockCallback(array $block, string $content = '', bool $is_preview = false, int $post_id = 0): void
