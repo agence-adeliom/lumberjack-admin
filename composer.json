@@ -1,5 +1,6 @@
 {
     "name": "agence-adeliom/lumberjack-admin",
+    "license": "MIT",
     "require": {
         "php": ">=8.0.2",
         "rareloop/lumberjack-core": "^5.0",
