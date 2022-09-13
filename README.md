@@ -17,6 +17,15 @@ composer require agence-adeliom/lumberjack-admin
 cp vendor/agence-adeliom/lumberjack-admin/config/gutenberg.php web/app/themes/YOUR_THEME/config/gutenberg.php
 ```
 
+### Register the service provider into web/app/themes/YOUR_THEME/config/app.php
+
+```php
+'providers' => [
+    ...
+    \Adeliom\Lumberjack\Admin\AdminProvider::class
+]
+```
+
 ## Usage
 
 ## Create an admin interface like for Options pages or Custom Post Types
