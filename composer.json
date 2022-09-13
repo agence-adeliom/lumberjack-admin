@@ -17,13 +17,5 @@
         "allow-plugins": {
             "composer/installers": true
         }
-    },
-    "conflict": {
-        "agence-adeliom/lumberjack-cron": "<1.0.1",
-        "agence-adeliom/lumberjack-blocks": "<1.0.1",
-        "agence-adeliom/lumberjack-pagination": "<1.0.1",
-        "agence-adeliom/lumberjack-hooks": "<1.0.1",
-        "agence-adeliom/lumberjack-taxonomy": "<1.0.1",
-        "agence-adeliom/lumberjack-assets": "<1.0.1"
     }
 }
