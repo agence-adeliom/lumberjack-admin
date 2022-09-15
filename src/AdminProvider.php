@@ -14,6 +14,9 @@ class AdminProvider extends ServiceProvider
      */
     public function boot(Config $config): void
     {
+        $this->registerAdmin();
+        $this->registerBlock();
+
         add_action('init', [TemplateHooks::class, "addBlockTemplateToPageTemplate"]);
         add_filter('use_block_editor_for_post_type', [TemplateHooks::class, "disabledGutenberg"], 10, 2);
         add_action('allowed_block_types_all', [RestrictionsHooks::class, "allowedBlock"], 10, 2);
@@ -27,5 +30,74 @@ class AdminProvider extends ServiceProvider
             }
             return array_merge($categories, $gutenbergCategories);
         }, 10, 2);
+    }
+
+    private function registerAdmin(): void
+    {
+        $adminPath = $this->app->basePath() . "/app/Admin";
+        foreach ($this->getDirContents($adminPath) as $file) {
+            include($file);
+        }
+        foreach (get_declared_classes() as $class) {
+            if (str_contains($class, "App\Admin")) {
+                try {
+                    $classMeta = new \ReflectionClass($class);
+                    if ($classMeta->isSubclassOf(AbstractAdmin::class)) {
+                        $class::register();
+                    }
+                } catch (\ReflectionException $reflectionException) {
+                }
+            }
+        }
+    }
+
+    private function registerBlock(): void
+    {
+        $adminPath = $this->app->basePath() . "/app/Block";
+
+        foreach ($this->getDirContents($adminPath) as $file) {
+            $info = pathinfo($file);
+            if ($info['extension'] === "php") {
+                include($file);
+            }
+        }
+
+        foreach (get_declared_classes() as $class) {
+            if (str_contains($class, "App\Blocks")) {
+                try {
+                    $classMeta = new \ReflectionClass($class);
+                    if ($classMeta->isSubclassOf(AbstractBlock::class)) {
+                        $instance = new $class();
+
+                        if (!$instance->isValid() || !$instance->isEnabled()) {
+                            unset($instance);
+                            continue 1;
+                        }
+
+                        $instance->init();
+                    }
+                } catch (\ReflectionException $reflectionException) {
+                }
+            }
+        }
+    }
+
+    /**
+     * @param $path
+     * @return array
+     */
+    private function getDirContents($path): array
+    {
+        $rii = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path));
+        $php_files = new \RegexIterator($rii, '/\.php$/');
+
+        $files = [];
+        foreach ($rii as $file) {
+            if (!$file->isDir()) {
+                $files[] = $file->getPathname();
+            }
+        }
+
+        return $files;
     }
 }
