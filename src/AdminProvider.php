@@ -35,6 +35,9 @@ class AdminProvider extends ServiceProvider
     private function registerAdmin(): void
     {
         $adminPath = $this->app->basePath() . "/app/Admin";
+        if (!file_exists($adminPath)) {
+            return;
+        }
         foreach ($this->getDirContents($adminPath) as $file) {
             include($file);
         }
@@ -54,7 +57,9 @@ class AdminProvider extends ServiceProvider
     private function registerBlock(): void
     {
         $adminPath = $this->app->basePath() . "/app/Block";
-
+        if (!file_exists($adminPath)) {
+            return;
+        }
         foreach ($this->getDirContents($adminPath) as $file) {
             $info = pathinfo($file);
             if ($info['extension'] === "php") {
