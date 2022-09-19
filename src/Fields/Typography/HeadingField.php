@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Fields\Typography;
+namespace Adeliom\Lumberjack\Admin\Fields\Typography;
 
 use Extended\ACF\Fields\Group;
 use Extended\ACF\Fields\Select;

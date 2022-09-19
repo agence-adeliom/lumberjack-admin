@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Fields\Typography;
+namespace Adeliom\Lumberjack\Admin\Fields\Typography;
 
 use App\Hooks\Admin\WysiwygHooks;
 use Extended\ACF\Fields\WysiwygEditor;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Fields\Medias;
+namespace Adeliom\Lumberjack\Admin\Fields\Medias;
 
 use Extended\ACF\Fields\Image;
 

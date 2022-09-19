@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Fields\Choices;
+namespace Adeliom\Lumberjack\Admin\Fields\Choices;
 
 use Extended\ACF\Fields\TrueFalse;
 
