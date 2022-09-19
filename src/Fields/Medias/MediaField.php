@@ -1,13 +1,14 @@
 <?php
 
-namespace Adeliom\Lumberjack\Admin\Fields\Medias;
+namespace App\Admin\Fields\Medias;
 
+use App\Admin\Fields\VideoField;
 use Extended\ACF\ConditionalLogic;
 use Extended\ACF\Fields\Group;
 use Extended\ACF\Fields\Select;
 use Extended\ACF\Fields\TrueFalse;
 
-abstract class MediaField
+class MediaField
 {
     public const HAS_IMAGE = "image";
     public const HAS_VIDEO = "video";
@@ -15,20 +16,14 @@ abstract class MediaField
     public const MEDIA = "media";
 
     public const TYPE = "type";
-    public const FIT_CONTAIN = "fit_contain";
-    public const POSITION = "position";
-
-    public const POSITION_TOP = "top";
-    public const POSITION_BOTTOM = "bottom";
-    public const POSITION_CENTER = "center";
 
     /**
      * Groupe média : Choix entre vidéo ou image
      */
-    public static function media(array $includes = [
+    public static function media(string $instructions = "", array $includes = [
         self::HAS_IMAGE,
         self::HAS_VIDEO,
-    ], bool $handleWidth = false)
+    ])
     {
 
         $choices = [];
@@ -51,29 +46,8 @@ abstract class MediaField
                 ->required()
         ];
 
-        if ($handleWidth) {
-            $fields = array_merge($fields, [
-                TrueFalse::make("Image largeur auto", self::FIT_CONTAIN)
-                    ->instructions("L'image s'adapte à la taille du bloc")
-                    ->stylisedUi()
-                    ->conditionalLogic([
-                        ConditionalLogic::where(self::TYPE, "==", self::HAS_IMAGE)
-                    ]),
-
-                Select::make("Position de l'image", self::POSITION)
-                    ->choices([
-                        self::POSITION_TOP => "En haut",
-                        self::POSITION_BOTTOM => "En bas",
-                        self::POSITION_CENTER => "Centrée",
-                    ])
-                    ->conditionalLogic([
-                        ConditionalLogic::where(self::FIT_CONTAIN, "==", 1)
-                    ])
-            ]);
-        }
-
         if ($hasImage) {
-            $imageField = ImageField::image()
+            $imageField = ImageField::make()
             ->conditionalLogic([
                 ConditionalLogic::where(self::TYPE, "==", self::HAS_IMAGE),
             ]);
@@ -90,6 +64,7 @@ abstract class MediaField
         }
 
         return Group::make("Média", self::MEDIA)
+            ->instructions($instructions)
             ->fields($fields);
     }
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace Adeliom\Lumberjack\Admin\Fields\Typography;
+namespace App\Admin\Fields\Typography;
 
 use Extended\ACF\Fields\Text;
 
-abstract class UptitleField extends Text
+class UptitleField extends Text
 {
     public const UPTITLE = "uptitle";
 

@@ -1,17 +1,16 @@
 <?php
 
-namespace Adeliom\Lumberjack\Admin\Fields\Typography;
+namespace App\Admin\Fields\Typography;
 
 use Extended\ACF\Fields\Group;
 use Extended\ACF\Fields\Select;
 use Extended\ACF\Fields\Text;
 
-abstract class TitleField extends Text
+class HeadingField extends Text
 {
     public const TAG = "tag";
     public const TITLE = "title";
     public const CONTENT = "content";
-
 
     /**
      * Titre
@@ -19,15 +18,6 @@ abstract class TitleField extends Text
     public static function make(string $label = "Titre", ?string $name = null): static
     {
         return parent::make($label, $name ?? self::TITLE);
-    }
-
-    public static function content(string $label = "Titre", ?string $name = null, ?string $instruction = null): static
-    {
-        $field = parent::make($label, $name ?? self::TITLE);
-        if ($instruction) {
-            $field->instructions($instruction);
-        }
-        return $field;
     }
 
     /**
@@ -57,11 +47,11 @@ abstract class TitleField extends Text
     /**
      * Groupe qui contient Tag HTML + Titre
      */
-    public static function group(string $title = "Titre", ?string $titleInstructions = null): Group
+    public static function group(string $title = "Titre"): Group
     {
         $fields = [
             self::tag(),
-            self::content($title, self::CONTENT, $titleInstructions)
+            self::make($title, self::CONTENT)
         ];
 
         return Group::make("Titre", self::TITLE)
