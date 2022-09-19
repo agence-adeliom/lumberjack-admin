@@ -2,7 +2,7 @@
 
 namespace Adeliom\Lumberjack\Admin\Fields\Tabs;
 
-use App\Admin\Fields\Medias\MediaField;
+use Adeliom\Lumberjack\Admin\Fields\Medias\MediaField;
 use Extended\ACF\Fields\Tab;
 
 class MediaTab

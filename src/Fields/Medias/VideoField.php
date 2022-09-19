@@ -2,8 +2,7 @@
 
 namespace Adeliom\Lumberjack\Admin\Fields\Medias;
 
-use App\Admin\Fields\Choices\TrueFalseField;
-use App\Admin\Fields\Medias\ImageField;
+use Adeliom\Lumberjack\Admin\Fields\Choices\TrueFalseField;
 use Extended\ACF\ConditionalLogic;
 use Extended\ACF\Fields\File;
 use Extended\ACF\Fields\Group;
