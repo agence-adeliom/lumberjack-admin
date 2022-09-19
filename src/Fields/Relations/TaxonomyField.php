@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Fields;
+namespace Adeliom\Lumberjack\Admin\Fields\Relations;
 
 use Extended\ACF\Fields\Taxonomy;
 

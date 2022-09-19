@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Fields;
+namespace Adeliom\Lumberjack\Admin\Fields\Buttons;
 
 use Extended\ACF\Fields\Group;
 use Extended\ACF\Fields\Link;

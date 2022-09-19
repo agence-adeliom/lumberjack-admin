@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Fields\Tabs;
+namespace Adeliom\Lumberjack\Admin\Fields\Tabs;
 
 use Extended\ACF\Fields\Tab;
 use Extended\ACF\Fields\Text;
