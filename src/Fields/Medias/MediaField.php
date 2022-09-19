@@ -2,11 +2,9 @@
 
 namespace Adeliom\Lumberjack\Admin\Fields\Medias;
 
-use App\Admin\Fields\VideoField;
 use Extended\ACF\ConditionalLogic;
 use Extended\ACF\Fields\Group;
 use Extended\ACF\Fields\Select;
-use Extended\ACF\Fields\TrueFalse;
 
 class MediaField
 {
