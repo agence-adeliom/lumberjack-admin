@@ -142,3 +142,5 @@ The twig template attached to this block is `views/block/wysiwyg.html.twig`.
 
 ## License
 Lumberjack Admin is released under [the MIT License](LICENSE).
+
+
