@@ -1,21 +1,34 @@
 <?php
 
-namespace Adeliom\Lumberjack\Admin\Fields\Medias;
+namespace App\Admin\Fields\Medias;
 
 use Extended\ACF\Fields\Image;
 
-abstract class ImageField
+class ImageField
 {
     public const IMAGE = "image";
 
-    /**
-     * Image
-     */
-    public static function image(string $width = "", string $height = "", string $title = "Image", ?string $key = null): Image
+    public static function make(string $title = "Image", ?string $key = null, ?int $width = null, ?int $height = null): Image
     {
-        return Image::make(__($title, 'lumberjack-admin'), $key ?? self::IMAGE)
-            ->instructions(!empty($width) ? ("Ratio recommandé : " . $width . "x" . $height) : "")
+
+        $instructions = null;
+
+        if (null !== $width && null !== $height) {
+            $instructions = "Ratio recommandé : " . $width . "x" . $height . "px";
+        } elseif (null !== $width) {
+            $instructions = "Largeur recommandée : " . $width . "px";
+        } elseif (null !== $height) {
+            $instructions = "Hauteur recommandée : " . $height . "px";
+        }
+
+        $imageField = Image::make(__($title), $key ?? self::IMAGE)
             ->library("all")
             ->returnFormat('array');
+
+        if ($instructions) {
+            $imageField = $imageField->instructions($instructions);
+        }
+
+        return $imageField;
     }
 }

@@ -1,15 +1,15 @@
 <?php
 
-namespace Adeliom\Lumberjack\Admin\Fields\Medias;
+namespace App\Admin\Fields;
 
-use Adeliom\Lumberjack\Admin\Fields\Choices\TrueFalseField;
-use Adeliom\Lumberjack\Admin\Fields\Medias\ImageField;
+use App\Admin\Fields\Choices\TrueFalseField;
+use App\Admin\Fields\Medias\ImageField;
 use Extended\ACF\ConditionalLogic;
 use Extended\ACF\Fields\File;
 use Extended\ACF\Fields\Group;
 use Extended\ACF\Fields\Text;
 
-abstract class VideoField
+class VideoField
 {
     public const VIDEO = "video";
     public const THUMBNAIL = "thumbnail";
@@ -22,10 +22,10 @@ abstract class VideoField
      */
     public static function video(): Group
     {
-        return Group::make(__("Vidéo", 'lumberjack-admin'), self::VIDEO)
+        return Group::make(__("Vidéo"), self::VIDEO)
             ->fields([
 
-                ImageField::image("", "", __("Vignette", 'lumberjack-admin'), self::THUMBNAIL)
+                ImageField::make(__("Vignette"), self::THUMBNAIL)
                     ->required(),
 
                 TrueFalseField::make("Vidéo youtube ?", self::IS_YOUTUBE),
