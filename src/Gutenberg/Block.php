@@ -4,14 +4,21 @@ declare(strict_types=1);
 
 namespace Adeliom\Lumberjack\Admin\Gutenberg;
 
+use Adeliom\Lumberjack\Admin\Helpers\GutenbergBlock;
 use Extended\ACF\Fields\Field;
 use Extended\ACF\Location;
+
+use function Symfony\Component\String\u;
 
 /**
  * @internal
  */
 class Block
 {
+    public const NAME = null;
+    public const TITLE = null;
+    public const DESCRIPTION = null;
+
     /**
      * @var \Traversable|null
      */
@@ -42,7 +49,7 @@ class Block
      *
      * @var string $category
      */
-    protected string $category;
+    protected string $category = "common";
 
     /**
      * The icon of this block.
@@ -63,7 +70,7 @@ class Block
      *
      * @var array $post_types
      */
-    protected array $post_types = ['post', 'page'];
+    protected array $post_types = [];
 
     /**
      * The default display mode of the block that is shown to the user.
@@ -148,37 +155,58 @@ class Block
      * @param array $settings The block definitions.
      * @since 0.10
      */
-    public function __construct(array $settings)
+    public function __construct(?array $settings = [])
     {
         // Path related definitions.
         $reflection = new \ReflectionClass($this);
         $block_path = $reflection->getFileName();
         $directory_path = dirname($block_path);
-        $this->name = strtolower(preg_replace('#(?<!^)[A-Z]#', '-$0', basename($block_path, '.php')));
+
+        $settings['enabled'] = $settings['enabled'] ?? true;
+        $settings['enqueue_assets'] = $settings['enqueue_assets'] ?? null;
+        $settings['icon'] = $settings['icon'] ?? apply_filters('acf_gutenblocks/default_icon', 'admin-generic');
+        $settings['dir'] = $settings['dir'] ?? $directory_path;
+        $settings['post_types'] = $settings['post_types'] ?? $this->getPostTypes();
+        $settings['mode'] = $settings['mode'] ?? $this->getMode();
+        $settings['example'] = $settings['example'] ?? $this->getExample();
+        $settings['align'] = $settings['align'] ?? $this->getAlignment();
+        $settings['align_content'] = $settings['align_content'] ?? $this->getAlignmentContent();
+        $settings['align_text'] = $settings['align_text'] ?? $this->getAlignmentText();
+        $settings['category'] = $settings['category'] ?? $this->getCategory();
+        $settings['supports'] = isset($settings['supports']) && is_array($settings['supports']) ? array_merge($settings['supports'], $this->getSupports()) : $this->getSupports();
+
+        $settings = apply_filters('acf_gutenblocks/block_settings', $settings, static::NAME);
+
+        $settings['name'] = static::NAME;
+        $settings['title'] = static::TITLE;
+        $settings['description'] = static::DESCRIPTION;
+
+        if (!preg_match('/^([a-z](?![\d])|[\d](?![a-z]))+(-?([a-z](?![\d])|[\d](?![a-z])))*$|^$/', self::name())) {
+            $instead = u(self::name())->snake()->replace("_", "-")->toString();
+            throw new \RuntimeException(sprintf("The block name '%s' in %s is not a valid format. You must use kebab-case for block name. May be you should use '%s'", self::name(), static::class, $instead));
+        }
+
+        if (GutenbergBlock::isAlreadyRegistered(self::key())) {
+            throw new \RuntimeException(sprintf("An other block with name '%s' is already defined", self::name()));
+        }
+
         // User definitions.
-        $this->enabled = $settings['enabled'] ?? true;
-        $this->assets = $settings['enqueue_assets'] ?? null;
-        $this->dir = $settings['dir'] ?? $directory_path;
-        $this->icon = $settings['icon'] ?? apply_filters('acf_gutenblocks/default_icon', 'admin-generic');
-        $this->mode = $settings['mode'] ?? $this->getMode();
-        $this->example = $settings['example'] ?? $this->getExample();
-        $this->align = $settings['align'] ?? $this->getAlignment();
-        $this->align_content = $settings['align_content'] ?? $this->getAlignmentContent();
-        $this->align_text = $settings['align_text'] ?? $this->getAlignmentText();
-        $this->supports = isset($settings['supports']) && is_array($settings['supports']) ? array_merge($settings['supports'], $this->getSupports()) : $this->getSupports();
-        $settings = apply_filters('acf_gutenblocks/block_settings', [
-            'title' => $settings['title'],
-            'description' => $settings['description'],
-            'category' => $settings['category'],
-            'icon' => $this->icon,
-            'supports' => $this->supports,
-            'post_types' => $settings['post_types'] ?? $this->post_types,
-        ], $this->name);
         $this->title = $settings['title'];
+        $this->name = $settings['name'];
+        $this->enabled = $settings['enabled'];
+        $this->assets = $settings['enqueue_assets'];
+        $this->dir = $settings['dir'];
+        $this->mode = $settings['mode'];
+        $this->example = $settings['example'];
+        $this->align = $settings['align'];
+        $this->align_content = $settings['align_content'];
+        $this->align_text = $settings['align_text'];
+        $this->supports = $settings['supports'];
         $this->description = $settings['description'];
         $this->category = $settings['category'];
         $this->icon = $settings['icon'];
         $this->post_types = $settings['post_types'];
+
         // Set ACF Fields to the block.
         $this->fields = $this->getFields();
     }
@@ -204,10 +232,10 @@ class Block
 
     /**
      * User defined ACF fields
-     *
+     * @see https://github.com/vinkla/extended-acf#fields
      * @return \Traversable|null
      */
-    protected function getFields(): ?\Traversable
+    public static function getFields(): ?\Traversable
     {
         return null;
     }
@@ -279,7 +307,7 @@ class Block
 
     public function isValid(): bool
     {
-        return class_exists("Timber");
+        return class_exists("Timber") && !GutenbergBlock::isAlreadyRegistered(self::key());
     }
 
     /**
@@ -406,5 +434,15 @@ class Block
                 ]);
             }
         }
+    }
+
+    public static function key(): string
+    {
+        return sprintf('%s/%s', GutenbergBlock::ACF_BLOCK_PREFIX, static::NAME);
+    }
+
+    public static function name(): string
+    {
+        return static::NAME;
     }
 }

@@ -15,11 +15,8 @@ use Extended\ACF\Location;
  */
 abstract class AbstractAdmin
 {
-    /**
-     * Visible in metabox handle
-     * @return string
-     */
-    abstract public static function getTitle(): string;
+    public const TITLE = 'abstract';
+    public const IS_OPTION_PAGE = false;
 
     /**
      * An list of fields
@@ -33,7 +30,7 @@ abstract class AbstractAdmin
      */
     public static function getLocation(): Traversable
     {
-        if (function_exists('acf_add_options_page') && static::hasOptionPage()) {
+        if (function_exists('acf_add_options_page') && static::IS_OPTION_PAGE) {
             yield Location::where('options_page', static::getSlug());
         }
         return [];
@@ -107,23 +104,14 @@ abstract class AbstractAdmin
     }
 
     /**
-     * Register has option page
-     * @return bool
-     */
-    public static function hasOptionPage(): bool
-    {
-        return false;
-    }
-
-    /**
      * Register option page settings
      * @return array
      */
     public static function setupOptionPage(): array
     {
         return [
-            'page_title' => static::getTitle(),
-            'menu_title' => static::getTitle(),
+            'page_title' => static::TITLE,
+            'menu_title' => static::TITLE,
             'menu_slug'  => static::getSlug(),
             'capability' => 'edit_theme_options',
             'autoload' => true
@@ -136,7 +124,7 @@ abstract class AbstractAdmin
      */
     public static function getSlug(): string
     {
-        return (new AsciiSlugger())->slug(static::getTitle())->toString();
+        return (new AsciiSlugger())->slug(static::TITLE)->toString();
     }
 
     /**
@@ -145,13 +133,15 @@ abstract class AbstractAdmin
      */
     public static function register(): void
     {
-        if (function_exists('acf_add_options_page') && static::hasOptionPage()) {
+        self::__add(__CLASS__, static::class);
+
+        if (function_exists('acf_add_options_page') && static::IS_OPTION_PAGE) {
             $options = static::setupOptionPage();
             acf_add_options_page($options);
         }
 
         register_extended_field_group([
-            'title' => static::getTitle(),
+            'title' => static::TITLE,
             'style' => static::getStyle(),
             'fields' => iterator_to_array(static::getFields(), false),
             'location' => iterator_to_array(static::getLocation(), false),
@@ -161,5 +151,16 @@ abstract class AbstractAdmin
             'hide_on_screen' => static::getHideOnScreen(),
             'menu_order' => static::getMenuOrder(),
         ]);
+    }
+
+    public static function __add($class, $c)
+    {
+        $reflection = new \ReflectionClass($class);
+        $constantsForced = $reflection->getConstants();
+        foreach ($constantsForced as $constant => $value) {
+            if (constant("$c::$constant") === "abstract") {
+                throw new \RuntimeException("$constant in not defined  in " . (string) $c);
+            }
+        }
     }
 }
