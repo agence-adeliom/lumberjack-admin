@@ -173,7 +173,7 @@ class Block
         $settings['align_content'] = $settings['align_content'] ?? $this->getAlignmentContent();
         $settings['align_text'] = $settings['align_text'] ?? $this->getAlignmentText();
         $settings['category'] = $settings['category'] ?? $this->getCategory();
-        $settings['supports'] = isset($settings['supports']) && is_array($settings['supports']) ? array_merge($settings['supports'], $this->getSupports()) : $this->getSupports();
+        $settings['supports'] = isset($settings['supports']) && is_array($settings['supports']) ? array_merge($this->getSupports(), $settings['supports']) : $this->getSupports();
 
         $settings = apply_filters('acf_gutenblocks/block_settings', $settings, static::NAME);
 
