@@ -193,17 +193,37 @@ return [
     ...
     'templates' => [
         ...
-        "disable_blocks" => false
+        "KEY" => [...]
     ],
     ...
 ];
 ```
 
-`disable_blocks` can handle multiple type :
+`KEY` can handle multiple type :
 
-* `false` mean that all blocks are allowed
-* `a regex` you can use a regex to disallow every blocks matching this regex. ex. `/((core|yoast|yoast-seo|gravityforms)\/\w*)/`
-* `a array` you can use a array with wildcards. ex: `[ 'core/*', 'yoast/breadcrumb' ]`
+* **post type** including **custom post type**. ex. _post, page, project ..._
+* **template** ex. _tpl-home.php_
+* **id** ex. _150_
+* **post id** ex. _page-10_
+
+#### Settings
+
+```php
+[
+    "enabled" => true,
+    "blocks" => [],
+    "template" => null,
+    "template_lock" => null
+]
+```
+
+`enabled` : Ability to disable gutenberg for the key. `true` by default
+
+`blocks` : List of allowed blocks. You can allow (ex. `acf/text`, `acf/*`) or disallow blocks (ex. `!core/embed`, `!core/*`)
+
+`template` : Allow specifying a default initial state for an editor. `null` by default. [see more](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-templates)
+
+`template_lock` : Ability to lock gutenberg for the key. `null` by default. [see more](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-templates/#locking)
 
 ## License
 Lumberjack Admin is released under [the MIT License](LICENSE).
