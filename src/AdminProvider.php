@@ -2,6 +2,8 @@
 
 namespace Adeliom\Lumberjack\Admin;
 
+use Adeliom\Lumberjack\Admin\Gutenberg\Block;
+use Adeliom\Lumberjack\Admin\Helpers\GutenbergBlock;
 use Adeliom\Lumberjack\Admin\Hooks\RestrictionsHooks;
 use Adeliom\Lumberjack\Admin\Hooks\TemplateHooks;
 use Rareloop\Lumberjack\Config;
@@ -39,8 +41,12 @@ class AdminProvider extends ServiceProvider
             return;
         }
         foreach ($this->getDirContents($adminPath) as $file) {
-            include($file);
+            $info = pathinfo($file);
+            if ($info['extension'] === "php") {
+                include($file);
+            }
         }
+        /** @var AbstractAdmin $class */
         foreach (get_declared_classes() as $class) {
             if (str_contains($class, "App\Admin")) {
                 try {
@@ -60,6 +66,7 @@ class AdminProvider extends ServiceProvider
         if (!file_exists($adminPath)) {
             return;
         }
+
         foreach ($this->getDirContents($adminPath) as $file) {
             $info = pathinfo($file);
             if ($info['extension'] === "php") {
@@ -68,12 +75,12 @@ class AdminProvider extends ServiceProvider
         }
 
         foreach (get_declared_classes() as $class) {
-            if (str_contains($class, "App\Blocks")) {
+            if (str_contains($class, "App\Block")) {
                 try {
                     $classMeta = new \ReflectionClass($class);
-                    if ($classMeta->isSubclassOf(AbstractBlock::class)) {
+                    if ($classMeta->isSubclassOf(Block::class)) {
+                        /** @var AbstractBlock $instance */
                         $instance = new $class();
-
                         if (!$instance->isValid() || !$instance->isEnabled()) {
                             unset($instance);
                             continue 1;

@@ -3,10 +3,16 @@
 namespace Adeliom\Lumberjack\Admin;
 
 use Adeliom\Lumberjack\Admin\Gutenberg\Block;
+use Adeliom\Lumberjack\Admin\Helpers\GutenbergBlock;
+use Exception;
 use Timber\Timber;
 
 abstract class AbstractBlock extends Block
 {
+    public const NAME = 'abstract';
+    public const TITLE = 'abstract';
+    public const DESCRIPTION = null;
+
     /**
      * @var mixed|string
      */
@@ -19,11 +25,11 @@ abstract class AbstractBlock extends Block
     public string $template = "";
     public string $preview = "";
 
-    public function __construct(array $settings)
+    public function __construct(?array $settings = [])
     {
+        self::__add(__CLASS__, static::class);
         parent::__construct($settings);
-
-        $this->dir = "views/blocks" . ($settings['dir'] ? '/' . $settings['dir'] : '');
+        $this->dir = "views/blocks" . (!empty($settings['dir']) ? '/' . $settings['dir'] : '');
         $this->dir_preview = $settings['dir_preview'] ?? "assets/images/admin/blocks";
         $this->dir_icon = $settings['dir_icon'] ?? "assets/images/admin/blocks";
         $tpl = $this->name;
@@ -81,5 +87,16 @@ abstract class AbstractBlock extends Block
         }
 
         Timber::render($path, $context);
+    }
+
+    public static function __add($class, $c)
+    {
+        $reflection = new \ReflectionClass($class);
+        $constantsForced = $reflection->getConstants();
+        foreach ($constantsForced as $constant => $value) {
+            if (constant("$c::$constant") === "abstract") {
+                throw new \RuntimeException("$constant in not defined  in " . (string) $c);
+            }
+        }
     }
 }

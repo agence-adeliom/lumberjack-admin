@@ -11,12 +11,12 @@ class GutenbergBlock
     /**
      * @var string
      */
-    protected const CORE_BLOCK_PREFIX = 'core';
+    public const CORE_BLOCK_PREFIX = 'core';
 
     /**
      * @var string
      */
-    protected const ACF_BLOCK_PREFIX = 'acf';
+    public const ACF_BLOCK_PREFIX = 'acf';
 
     /**
      * Get a array of all block names prefixed by core/*
@@ -25,6 +25,11 @@ class GutenbergBlock
     public static function getCoreBlocksList(): array
     {
         return self::getBlocksListWithPrefix(self::CORE_BLOCK_PREFIX . '/');
+    }
+
+    public static function isAlreadyRegistered(string $name): bool
+    {
+        return in_array($name, self::getAllBlocksList(), true);
     }
 
     /**
@@ -39,7 +44,7 @@ class GutenbergBlock
         $blocks = [];
 
         foreach ($registeredBlocks as $blockName) {
-            if (0 === strpos($blockName, $prefix)) {
+            if (str_starts_with($blockName, $prefix)) {
                 $blocks[] = $blockName;
             }
         }
