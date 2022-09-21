@@ -208,7 +208,7 @@ class Block
         $this->post_types = $settings['post_types'];
 
         // Set ACF Fields to the block.
-        $this->fields = $this->getFields();
+        $this->fields = static::getFields();
     }
 
     /**
