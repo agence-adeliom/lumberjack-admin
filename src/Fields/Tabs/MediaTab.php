@@ -16,16 +16,16 @@ class MediaTab extends Tab
 
     public static function media(string $instructions = ""): \Generator
     {
-        return self::media($instructions);
+        return MediaField::make($instructions);
     }
 
     public static function image(string $instructions = ""): \Generator
     {
-        return self::media($instructions, [MediaField::HAS_IMAGE]);
+        return MediaField::make($instructions, [MediaField::HAS_IMAGE]);
     }
 
     public static function video(string $instructions = ""): \Generator
     {
-        return self::media($instructions, [MediaField::HAS_VIDEO]);
+        return MediaField::make($instructions, [MediaField::HAS_VIDEO]);
     }
 }
