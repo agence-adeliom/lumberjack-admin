@@ -3,6 +3,7 @@
 namespace Adeliom\Lumberjack\Admin\Fields\Tabs;
 
 use Adeliom\Lumberjack\Admin\Fields\Medias\MediaField;
+use Extended\ACF\Fields\Group;
 use Extended\ACF\Fields\Tab;
 
 class MediaTab extends Tab
@@ -14,17 +15,17 @@ class MediaTab extends Tab
         return new static($label, $name);
     }
 
-    public static function media(string $instructions = ""): \Generator
+    public function media(string $instructions = ""): Group
     {
         return MediaField::make($instructions);
     }
 
-    public static function image(string $instructions = ""): \Generator
+    public function image(string $instructions = ""): Group
     {
         return MediaField::make($instructions, [MediaField::HAS_IMAGE]);
     }
 
-    public static function video(string $instructions = ""): \Generator
+    public function video(string $instructions = ""): Group
     {
         return MediaField::make($instructions, [MediaField::HAS_VIDEO]);
     }
