@@ -8,22 +8,27 @@ use Extended\ACF\Fields\Text;
 
 class HeadingField extends Text
 {
-    public const TAG = "tag";
-    public const TITLE = "title";
-    public const CONTENT = "content";
+    private const TAG = "tag";
+    private const TITLE = "title";
+    private const CONTENT = "content";
 
-    /**
-     * Titre
-     */
-    public static function make(string $label = "Titre", ?string $name = null): static
+    public static function make(string $label = "Titre", string|null $name = self::TITLE): static
     {
-        return parent::make($label, $name ?? self::TITLE);
+        return new static($label, $name);
     }
 
-    /**
-     * Tag HTML
-     */
-    public static function tag(array $choices = [], string $instructions = "Choisir un tag HTML"): Select
+    public static function tag(array $choices = [], string $instructions = "Choisir un tag HTML"): Group
+    {
+        $fields = [
+            self::htmlTag($choices, $instructions),
+            self::make("Titre", self::CONTENT)
+        ];
+
+        return Group::make("Titre", self::TITLE)
+            ->fields($fields);
+    }
+
+    private static function htmlTag(array $choices = [], string $instructions = ""): Select
     {
         $defaultChoices = [
             "div" => "Aucun",
@@ -42,20 +47,5 @@ class HeadingField extends Text
             ->choices($choices)
             ->defaultValue("div")
             ->instructions($instructions);
-    }
-
-    /**
-     * Groupe qui contient Tag HTML + Titre
-     */
-    public static function group(string $title = "Titre"): Group
-    {
-        $fields = [
-            self::tag(),
-            self::make($title, self::CONTENT)
-        ];
-
-        return Group::make("Titre", self::TITLE)
-            ->fields($fields)
-            ;
     }
 }

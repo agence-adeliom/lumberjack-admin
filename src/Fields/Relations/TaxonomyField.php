@@ -6,15 +6,14 @@ use Extended\ACF\Fields\Taxonomy;
 
 class TaxonomyField extends Taxonomy
 {
-    public const CATEGORY = 'category';
+    private const CATEGORY = 'category';
 
-    public static function category(string $title = "", string $taxonomy = "", string $key = self::CATEGORY): static
+    public static function make(string $label = "Catégorie", string|null $name = self::CATEGORY): static
     {
-        return parent::make(__($title), $key)
+        return parent::make(__($label), $name)
             ->addTerm(false)
             ->loadTerms(false)
-            ->saveTerms(false)
-            ->taxonomy($taxonomy)
+            ->saveTerms(true)
             ->appearance('select')
             ->returnFormat('object');
     }

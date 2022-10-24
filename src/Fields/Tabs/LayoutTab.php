@@ -2,55 +2,82 @@
 
 namespace Adeliom\Lumberjack\Admin\Fields\Tabs;
 
+use Adeliom\Lumberjack\Admin\Fields\Tabs\Traits\Fields;
 use Extended\ACF\Fields\Group;
 use Extended\ACF\Fields\RadioButton;
+use Extended\ACF\Fields\Select;
 use Extended\ACF\Fields\Tab;
 use Extended\ACF\Fields\TrueFalse;
 
-class LayoutTab
+class LayoutTab extends Tab
 {
+    use Fields;
+
     private const TAB = "layout_tab";
 
-    public const MEDIA_POSITION = "media_position";
-    public const DARK_MODE = "dark_mode";
+    private const MEDIA_POSITION = "media_position";
+    private const DARK_MODE = "dark_mode";
 
-    public const MARGIN = "margin";
+    private const MARGIN = "margin";
 
+    private const MARGIN_SIZES = "sizes";
     private const MARGIN_TOP_REMOVE = "top_remove";
     private const MARGIN_BOTTOM_REMOVE = "bottom_remove";
 
-    public static function make(array $includes = []): \Generator
+    public static function make(string $label = "Mise en page", string|null $name = self::TAB): static
     {
-        yield Tab::make("Mise en page", self::TAB);
+        return new static($label, $name);
+    }
 
-        if (in_array(self::MEDIA_POSITION, $includes)) {
-            yield RadioButton::make(__('Position du média'), self::MEDIA_POSITION)
+    public static function darkMode(): TrueFalse
+    {
+        return TrueFalse::make(__('Dark mode'), self::DARK_MODE)
+            ->instructions('Activer le fond sombre pour ce bloc')
+            ->stylisedUi();
+    }
+
+    public static function mediaPosition(array $choices = [
+        'left'   => 'À gauche',
+        'right'  => 'À droite'
+    ]): RadioButton
+    {
+        return RadioButton::make(__('Position du média'), self::MEDIA_POSITION)
+            ->choices($choices)
+            ->defaultValue("left")
+            ->required();
+    }
+
+    public static function margin(array $fields = [
+        self::MARGIN_SIZES,
+        self::MARGIN_TOP_REMOVE,
+        self::MARGIN_BOTTOM_REMOVE
+    ]): Group
+    {
+
+        $fieldsGroup = [];
+
+        if (in_array(self::MARGIN_SIZES, $fields)) {
+            $fieldsGroup[] = Select::make("Taille des marges", self::MARGIN_SIZES)
                 ->choices([
-                    'left'   => 'À gauche',
-                    'right'  => 'À droite',
-                    'bottom'  => 'En bas',
-                    'top'  => 'En haut'
+                    "small" => "Petite",
+                    "large" => "Grande"
                 ])
-                ->defaultValue("left")
-                ->required();
+                ->defaultValue("large")
+                ->instructions("");
         }
 
-        if (in_array(self::DARK_MODE, $includes)) {
-            yield TrueFalse::make(__('Dark mode'), self::DARK_MODE)
-                ->instructions('Activer le fond sombre pour ce bloc')
-                ->stylisedUi();
+        if (in_array(self::MARGIN_TOP_REMOVE, $fields)) {
+            $fieldsGroup[] = TrueFalse::make("Suppression marge haute", self::MARGIN_TOP_REMOVE)
+                ->stylisedUi()
+                ->instructions("");
         }
 
-        if (in_array(self::MARGIN, $includes)) {
-            yield Group::make("Marges", self::MARGIN)
-                ->fields([
-                    TrueFalse::make("Suppression marge haute", self::MARGIN_TOP_REMOVE)
-                        ->stylisedUi()
-                        ->instructions(""),
-                    TrueFalse::make("Suppression marge basse", self::MARGIN_BOTTOM_REMOVE)
-                        ->stylisedUi()
-                        ->instructions("")
-                ]);
+        if (in_array(self::MARGIN_BOTTOM_REMOVE, $fields)) {
+            $fieldsGroup[] = TrueFalse::make("Suppression marge basse", self::MARGIN_BOTTOM_REMOVE)
+                ->stylisedUi()
+                ->instructions("");
         }
+
+        return Group::make("Marges", self::MARGIN)->fields($fieldsGroup);
     }
 }

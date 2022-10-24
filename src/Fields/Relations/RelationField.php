@@ -6,12 +6,11 @@ use Extended\ACF\Fields\Relationship;
 
 class RelationField extends Relationship
 {
-    public const POST = 'post';
+    private const POST = 'post';
 
-    public static function post(string $title = "", string $key = "", $postTypes = []): static
+    public static function make(string $label = "Page", string|null $name = self::POST): static
     {
-        return parent::make($title, !empty($key) ? $key : self::POST)
-            ->postTypes($postTypes)
+        return parent::make($label, self::POST)
             ->returnFormat('object');
     }
 }
