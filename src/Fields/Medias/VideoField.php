@@ -10,16 +10,16 @@ use Extended\ACF\Fields\Text;
 
 class VideoField
 {
-    public const VIDEO = "video";
-    public const THUMBNAIL = "thumbnail";
-    public const VIDEO_FILE = "file";
-    public const IS_YOUTUBE = "is_youtube";
-    public const ID_YOUTUBE = "id";
+    private const VIDEO = "video";
+    private const THUMBNAIL = "thumbnail";
+    private const VIDEO_FILE = "file";
+    private const IS_YOUTUBE = "is_youtube";
+    private const ID_YOUTUBE = "id";
 
     /**
      * Vidéo
      */
-    public static function video(): Group
+    public static function make(): Group
     {
         return Group::make(__("Vidéo"), self::VIDEO)
             ->fields([

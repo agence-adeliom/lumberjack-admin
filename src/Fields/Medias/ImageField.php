@@ -6,7 +6,7 @@ use Extended\ACF\Fields\Image;
 
 class ImageField
 {
-    public const IMAGE = "image";
+    private const IMAGE = "image";
 
     public static function make(string $title = "Image", ?string $key = null, ?int $width = null, ?int $height = null): Image
     {

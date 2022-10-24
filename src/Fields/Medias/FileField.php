@@ -6,7 +6,7 @@ use Extended\ACF\Fields\File;
 
 class FileField extends File
 {
-    public const PDF = "pdf";
+    private const PDF = "pdf";
 
     public static function pdf(string $title = "PDF", string $key = "", string $instructions = ""): static
     {

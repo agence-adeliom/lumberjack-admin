@@ -6,13 +6,10 @@ use Extended\ACF\Fields\Text;
 
 class UptitleField extends Text
 {
-    public const UPTITLE = "uptitle";
+    private const UP_TITLE = "uptitle";
 
-    /**
-     * Sur-titre
-     */
-    public static function make(string $label = "Sur-titre", ?string $name = null): static
+    public static function make(string $label = "Sur-titre", string|null $name = self::UP_TITLE): static
     {
-        return parent::make($label, $name ?? self::UPTITLE);
+        return new static($label, $name);
     }
 }

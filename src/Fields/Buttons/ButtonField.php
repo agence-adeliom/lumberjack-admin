@@ -6,25 +6,26 @@ use Extended\ACF\Fields\Group;
 use Extended\ACF\Fields\Link;
 use Extended\ACF\Fields\Select;
 
-class ButtonField
+class ButtonField extends Link
 {
-    public const BUTTON = "button";
-    public const BUTTON_TYPE = "type";
-    public const BUTTON_LINK = "link";
+    private const BUTTON = "button";
+    private const BUTTON_TYPE = "type";
+    private const BUTTON_LINK = "link";
 
-    public const BUTTONS = "buttons";
-    public const BUTTON_ONE = "one";
-    public const BUTTON_TWO = "two";
+    private const BUTTONS = "buttons";
+    private const BUTTON_ONE = "one";
+    private const BUTTON_TWO = "two";
 
-    /**
-     * Lien du bouton
-     */
-    public static function link(string $title = "Bouton", string $key = self::BUTTON): Link
+
+    public static function make(string $label = "Bouton", string|null $name = self::BUTTON): static
     {
-        return Link::make($title, $key);
+        return new static($label, $name);
     }
 
-    public static function types(string $title = "Types", $typeInstructions = ""): Group
+    /**
+     * Type de boutons
+     */
+    public function types(string $title = "Types", $typeInstructions = ""): Group
     {
         return Group::make($title, self::BUTTON)
             ->fields([
@@ -36,18 +37,18 @@ class ButtonField
                     ])
                     ->defaultValue("primary")
                     ->instructions($typeInstructions),
-                self::link("Lien", self::BUTTON_LINK),
+                self::make("Lien", self::BUTTON_LINK),
             ]);
     }
 
     /**
      * Groupe de deux boutons
      */
-    public static function group(bool $withType = false): Group
+    public function group(bool $withType = false): Group
     {
         $fields = [
-            self::link(__("Bouton principal"), self::BUTTON_ONE),
-            self::link(__("Bouton secondaire"), self::BUTTON_TWO),
+            self::make(__("Bouton principal"), self::BUTTON_ONE),
+            self::make(__("Bouton secondaire"), self::BUTTON_TWO),
         ];
 
         if ($withType) {

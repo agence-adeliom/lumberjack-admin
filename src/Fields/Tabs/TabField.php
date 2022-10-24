@@ -5,13 +5,11 @@ namespace Adeliom\Lumberjack\Admin\Fields\Tabs;
 use Adeliom\Lumberjack\Admin\Fields\Tabs\Traits\Fields;
 use Extended\ACF\Fields\Tab;
 
-class GlobalTab extends Tab
+class TabField extends Tab
 {
     use Fields;
 
-    private const TAB = "global_tab";
-
-    public static function make(string $label = "Global", string|null $name = self::TAB): static
+    public static function make(string $label, string|null $name = null): static
     {
         return new static($label, $name);
     }

@@ -2,22 +2,25 @@
 
 namespace Adeliom\Lumberjack\Admin\Fields\Tabs;
 
+use Adeliom\Lumberjack\Admin\Fields\Tabs\Traits\Fields;
 use Extended\ACF\Fields\Tab;
 use Extended\ACF\Fields\Text;
 
-class SettingsTab
+class SettingsTab extends Tab
 {
+    use Fields;
+
     private const TAB = "settings_tab";
+    private const ANCHOR = "anchor";
 
-    public const ANCHOR = "anchor";
-
-    public static function make(array $includes = []): \Generator
+    public static function make(string $label = "Paramètres", string|null $name = self::TAB): static
     {
-        yield Tab::make("Paramètres", self::TAB);
+        return new static($label, $name);
+    }
 
-        if (in_array(self::ANCHOR, $includes)) {
-            yield Text::make("Ancre", self::ANCHOR)
-                ->instructions("Ajouter une ancre pour accéder à la section au clic sur un bouton.");
-        }
+    public static function anchor(): Text
+    {
+        return Text::make("Ancre", self::ANCHOR)
+            ->instructions("Ajouter une ancre pour accéder à la section au clic sur un bouton.");
     }
 }

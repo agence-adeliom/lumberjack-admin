@@ -11,14 +11,13 @@ class MediaField
     public const HAS_IMAGE = "image";
     public const HAS_VIDEO = "video";
 
-    public const MEDIA = "media";
-
-    public const TYPE = "type";
+    private const MEDIA = "media";
+    private const TYPE = "type";
 
     /**
      * Groupe média : Choix entre vidéo ou image
      */
-    public static function media(string $instructions = "", array $includes = [
+    public static function make(string $instructions = "", array $includes = [
         self::HAS_IMAGE,
         self::HAS_VIDEO,
     ])
@@ -54,7 +53,7 @@ class MediaField
         }
 
         if ($hasVideo) {
-            $videoField = VideoField::video()->conditionalLogic([
+            $videoField = VideoField::make()->conditionalLogic([
                 ConditionalLogic::where(self::TYPE, "==", self::HAS_VIDEO),
             ]);
 
