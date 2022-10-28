@@ -10,7 +10,7 @@ class PostField extends PostObject
 
     public static function make(string $label = "Page", string|null $name = self::POST): static
     {
-        return parent::make($label, self::POST)
+        return parent::make($label, $name)
             ->returnFormat('object')
             ->allowNull();
     }
