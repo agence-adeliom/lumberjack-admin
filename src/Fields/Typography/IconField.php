@@ -1,10 +1,9 @@
 <?php
 
 namespace Adeliom\Lumberjack\Admin\Fields\Typography;
+use Extended\ACF\Fields\Text;
 
-use Extended\ACF\Fields\Field;
-
-class IconField extends Field
+class IconField extends Text
 {
     protected string|null $type = 'font-awesome';
 
