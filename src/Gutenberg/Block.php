@@ -147,7 +147,7 @@ class Block
      * The blocks assets.
      *
      */
-    public ?Closure $assets;
+    public ?\Closure $assets;
 
     /**
      * Begin block construction!
