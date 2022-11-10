@@ -10,6 +10,6 @@ class TextField extends Text
 
     public static function make(string $label = "Contenu", string|null $name = self::CONTENT): static
     {
-        return new static($label, $name);
+        return parent::make($label, $name);
     }
 }

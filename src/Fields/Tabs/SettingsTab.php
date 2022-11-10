@@ -15,7 +15,7 @@ class SettingsTab extends Tab
 
     public static function make(string $label = "Paramètres", string|null $name = self::TAB): static
     {
-        return new static($label, $name);
+        return parent::make($label, $name);
     }
 
     public static function anchor(): Text

@@ -14,7 +14,7 @@ class HeadingField extends Text
 
     public static function make(string $label = "Titre", string|null $name = self::TITLE): static
     {
-        return new static($label, $name);
+        return parent::make($label, $name);
     }
 
     public static function tag(array $choices = [], string $instructions = "Choisir un tag HTML"): Group
