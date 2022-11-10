@@ -16,7 +16,7 @@ class FileField extends File
     public function pdf(): static
     {
         $this->settings['name'] = self::PDF;
-        $this->settings['mime_types'] = ["pdf"];
+        $this->settings['mime_types'] = "pdf";
         $this->settings['library'] = "all";
         $this->settings['return_format'] = "array";
         return $this;
