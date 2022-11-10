@@ -11,6 +11,6 @@ class TabField extends Tab
 
     public static function make(string $label, string|null $name = null): static
     {
-        return new static($label, $name);
+        return parent::make($label, $name);
     }
 }

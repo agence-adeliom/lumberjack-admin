@@ -10,6 +10,6 @@ class UptitleField extends Text
 
     public static function make(string $label = "Sur-titre", string|null $name = self::UP_TITLE): static
     {
-        return new static($label, $name);
+        return parent::make($label, $name);
     }
 }

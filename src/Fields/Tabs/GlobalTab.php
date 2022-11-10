@@ -13,6 +13,6 @@ class GlobalTab extends Tab
 
     public static function make(string $label = "Global", string|null $name = self::TAB): static
     {
-        return new static($label, $name);
+        return parent::make($label, $name);
     }
 }
