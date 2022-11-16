@@ -8,15 +8,15 @@ class FileField extends File
 {
     private const PDF = "pdf";
 
-    public static function make(string $label, string|null $name = null): static
+    public static function make(string $label = "Fichier", string|null $name = null): static
     {
-        return new static($label, $name);
+        return parent::make($label, $name);
     }
 
     public function pdf(): static
     {
-        $this->settings['name'] = "pdf";
-        $this->settings['mime_types'] = ["pdf"];
+        $this->settings['name'] = self::PDF;
+        $this->settings['mime_types'] = "pdf";
         $this->settings['library'] = "all";
         $this->settings['return_format'] = "array";
         return $this;

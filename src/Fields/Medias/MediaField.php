@@ -20,7 +20,7 @@ class MediaField
     public static function make(string $instructions = "", array $includes = [
         self::HAS_IMAGE,
         self::HAS_VIDEO,
-    ])
+    ]): Group
     {
 
         $choices = [];
@@ -63,5 +63,27 @@ class MediaField
         return Group::make("Média", self::MEDIA)
             ->instructions($instructions)
             ->fields($fields);
+    }
+
+    public static function image(string $instructions = ""): Group
+    {
+        return Group::make("Média", self::MEDIA)
+            ->instructions($instructions)
+            ->fields([
+                ImageField::make()->conditionalLogic([
+                    ConditionalLogic::where(self::TYPE, "==", self::HAS_IMAGE),
+                ])
+            ]);
+    }
+
+    public static function video(string $instructions = ""): Group
+    {
+        return Group::make("Média", self::MEDIA)
+            ->instructions($instructions)
+            ->fields([
+                VideoField::make()->conditionalLogic([
+                    ConditionalLogic::where(self::TYPE, "==", self::HAS_VIDEO),
+                ])
+            ]);
     }
 }
