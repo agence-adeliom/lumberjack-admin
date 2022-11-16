@@ -21,10 +21,10 @@ class VideoField
      */
     public static function make(): Group
     {
-        return Group::make("Vidéo", self::VIDEO)
+        return Group::make(__("Vidéo"), self::VIDEO)
             ->fields([
 
-                ImageField::make("Vignette", self::THUMBNAIL)
+                ImageField::make(__("Vignette"), self::THUMBNAIL)
                     ->required(),
 
                 TrueFalseField::make("Vidéo youtube ?", self::IS_YOUTUBE),

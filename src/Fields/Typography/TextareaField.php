@@ -10,6 +10,6 @@ class TextareaField extends Textarea
 
     public static function make(string $label = "Description", string|null $name = self::DESCRIPTION): static
     {
-        return parent::make($label, $name);
+        return new static($label, $name);
     }
 }

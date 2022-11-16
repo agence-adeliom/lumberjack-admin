@@ -30,8 +30,8 @@ abstract class AbstractBlock extends Block
         self::__add(__CLASS__, static::class);
         parent::__construct($settings);
         $this->dir = "views/blocks" . (!empty($settings['dir']) ? '/' . $settings['dir'] : '');
-        $this->dir_preview = $settings['dir_preview'] ?? "assets/images/admin/blocks";
-        $this->dir_icon = $settings['dir_icon'] ?? "assets/images/admin/blocks";
+        $this->dir_preview = $settings['dir_preview'] ?? "assets/images/admin/gutenberg-blocks";
+        $this->dir_icon = $settings['dir_icon'] ?? "assets/images/admin/gutenberg-blocks";
         $tpl = $this->name;
         $tpl = str_replace("-block", "", $tpl);
         $this->template = sprintf('%s/%s%s', $this->dir, $tpl, $this->fileExtension());

@@ -19,7 +19,7 @@ class ButtonField extends Link
 
     public static function make(string $label = "Bouton", string|null $name = self::BUTTON): static
     {
-        return parent::make($label, $name);
+        return new static($label, $name);
     }
 
     /**

@@ -1,7 +1,6 @@
 <?php
 
 namespace Adeliom\Lumberjack\Admin\Fields\Typography;
-
 use Extended\ACF\Fields\Text;
 
 class IconField extends Text
