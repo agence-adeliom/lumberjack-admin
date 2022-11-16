@@ -11,7 +11,7 @@ class WysiwygField extends WysiwygEditor
 
     public static function make(string $label = "Description", string|null $name = self::WYSIWYG): static
     {
-        return new static($label, $name);
+        return parent::make($label, $name);
     }
 
     public function default(): static
