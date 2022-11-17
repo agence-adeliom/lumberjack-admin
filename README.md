@@ -131,14 +131,13 @@ The twig template attached to this block is `views/block/wysiwyg.html.twig`.
 <?php
 //web/app/themes/YOUR_THEME/config/gutenberg.php
 return [
-    'categories' => [
-        ...
-        "example" => [
-            'title' => 'Examples', 
-            'icon'  => 'images-alt'
+   'categories' => [
+        [
+            'slug' => 'content',
+            'title' => __('Content'),
+            'icon' => null,
         ]
-    ],
-    ...
+    ]
 ];
 ```
 
