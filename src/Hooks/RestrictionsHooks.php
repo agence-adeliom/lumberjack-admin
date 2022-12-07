@@ -100,7 +100,7 @@ class RestrictionsHooks
             }
         }
 
-
+        $blocks[ "core/block"] = true;
         return array_keys(array_filter($blocks));
     }
 }
