@@ -25,16 +25,20 @@ class ButtonField extends Link
     /**
      * Type de boutons
      */
-    public function types(string $title = "Types", $typeInstructions = ""): Group
+    public function types(string $title = "Types", $typeInstructions = "", array $choices = []): Group
     {
+
+        if (empty($choices)) {
+            $choices = [
+                "primary"   => __("Primaire"),
+                "secondary" => __("Secondaire"),
+                "outline"   => __("Outline"),
+            ];
+        }
         return Group::make($title, self::BUTTON)
             ->fields([
                 Select::make("Types", self::BUTTON_TYPE)
-                    ->choices([
-                        "primary"   => __("Primaire"),
-                        "secondary" => __("Secondaire"),
-                        "outline"   => __("Outline"),
-                    ])
+                    ->choices($choices)
                     ->defaultValue("primary")
                     ->instructions($typeInstructions),
                 self::make("Lien", self::BUTTON_LINK),
