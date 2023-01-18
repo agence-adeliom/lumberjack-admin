@@ -1,12 +1,13 @@
 # Fields Helper
 
+- [Typography](##typography)
 - [Buttons](#buttons)
 - [Choice](#choice)
 - [Layout](#layout)
 - [Medias](#medias)
 - [Settings](#settings)
 - [Tabs](#tabs)
-- [Typography](#typography)
+
 
 ## Contexte & usage
 Nous nous sommes rendus compte que nous utilisions toujours les mêmes types de champs ou groupe de champs.
@@ -50,18 +51,29 @@ HeadingField::make(?string $label = "Titre", ?string $name = "title");
 // Champs groupés (Titre + HTML tag)
 HeadingField::make()
     ->tag(?array $choices = [], ?string $instructions = "Choisir un tag HTML");
+    
+//basic usage
+HeadingField::make()->tag(),
 ```
-![img_3.png](img_3.png)
+![doc-img/img_3.png](doc-img/img_3.png)
 
 
 ### IconField
 
 **Icon** - Champ icône
 
+⚠️⚠️Attention, ce champ a une dépendance à la librairie [Font Awesome](https://fontawesome.com/) et au repo :
+
+``wpackagist-plugin/advanced-custom-fields-font-awesome``
+
+
 ```php
 use Adeliom\Lumberjack\Admin\Fields\Typography;
 
 IconField::make(?string $label = "Icône", ?string $name = "icon");
+
+//basic usage
+IconField::make(),
 ```
 
 ### TextAreaField
@@ -72,6 +84,9 @@ IconField::make(?string $label = "Icône", ?string $name = "icon");
 use Adeliom\Lumberjack\Admin\Fields\Typography;
 
 TextareaField::make(?string $label = "Description", ?string|null $name = "description");
+
+//basic usage
+TextareaField::make();
 ```
 
 
@@ -84,6 +99,9 @@ TextareaField::make(?string $label = "Description", ?string|null $name = "descri
 use Adeliom\Lumberjack\Admin\Fields\Typography;
 
 TextField::make(?string $label = "Contenu", ?string $name = "Contenu");
+
+//basic usage
+TextField::make();
 ```
 
 ### UptitleField
@@ -94,6 +112,9 @@ TextField::make(?string $label = "Contenu", ?string $name = "Contenu");
 use Adeliom\Lumberjack\Admin\Fields\Typography;
 
 UptitleField::make(?string $label = "Sur-titre", ?string|null $name = "uptitle");
+
+//basic usage
+UptitleField::make();
 ```
 
 ### WysiwygField
@@ -122,17 +143,17 @@ ButtonField::make(?string $label = "Bouton", string|null $name = "button");
 //Basic usage
 ButtonField::make();
 ```
-![img_1.png](img_1.png)
+![doc-img/img_1.png](doc-img/img_1.png)
 ```php
 //Options de type
 ButtonField::make()->types();
 ```
-![img.png](img.png)
+![doc-img/img.png](doc-img/img.png)
 ```php
 //Options de groupe
 ButtonField::make()->group();
 ```
-![img_2.png](img_2.png)
+![doc-img/img_2.png](doc-img/img_2.png)
 
 ## Choices
 
@@ -304,7 +325,7 @@ ContentTab::make()->fields([
 ]);
 ```
 
-![img_5.png](img_5.png)
+![doc-img/img_5.png](doc-img/img_5.png)
 
 ### GlobalTab
 **GlobalTab** - Champs onglet pour le contenu global
@@ -320,7 +341,7 @@ GlobalTab::make()->fields([
 ]);
 ```
 
-![img_6.png](img_6.png)
+![doc-img/img_6.png](doc-img/img_6.png)
 
 ### LayoutTab
 **LayoutTab** - Champs onglet pour la gestion de la mise en page (ex: position média, suppression des marges...)
@@ -336,7 +357,7 @@ LayoutTab::make()->fields([
 ]);
 ```
 
-![img_7.png](img_7.png)
+![doc-img/img_7.png](doc-img/img_7.png)
 
 ### MediaTab
 **MediaTab** - Champs onglet pour l'affichage des champs médias (media, image, video)
@@ -352,7 +373,7 @@ MediaTab::make()->fields([
 ]);
 ```
 
-![img_8.png](img_8.png)
+![doc-img/img_8.png](doc-img/img_8.png)
 
 ### SettingsTab
 **SettingsTab** - Champs onglet pour la gestion des paramètres (ex: ancre/identifiant d'un bloc)
@@ -368,7 +389,7 @@ SettingsTab::make()->fields([
 ]);
 ```
 
-![img_9.png](img_9.png)
+![doc-img/img_9.png](doc-img/img_9.png)
 
 ### TabField
 **Tab** - Champs onglet classique
@@ -430,4 +451,4 @@ SettingsField::anchor(?string $label = "Ancre", ?string|null $name = "anchor");
 SettingsField::anchor();
 ```
 
-![img_4.png](img_4.png)
+![doc-img/img_4.png](doc-img/img_4.png)
