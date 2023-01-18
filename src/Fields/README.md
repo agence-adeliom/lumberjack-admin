@@ -10,704 +10,424 @@
 
 ## Contexte & usage
 Nous nous sommes rendus compte que nous utilisions toujours les mêmes types de champs ou groupe de champs.
-Le nommage était redondant
+Le nommage des **clés** était redondant et l'écriture du TWIG également.
 
+Nous avons donc créé un helper pour simplifier l'écriture des champs et des groupes de champs.
 
-Download the [Advanced Custom Fields Pro](https://www.advancedcustomfields.com/pro) plugin and put it in either the `plugins` or `mu-plugins` directory. Visit the WordPress dashboard and activate the plugin.
+Ainsi, cela facilite aussi l'inclusion des fichiers twig sans en évident de devoir passer toujours les mêmes paramètres. On pourra donc définitir des valeurs de clés par défaut dans nos composants twig.
 
-#### Installing ACF Pro with Composer (optional)
-
-If you want to install [ACF Pro](https://www.advancedcustomfields.com/pro) with Composer, you may use the [private-composer-installer](https://github.com/ffraenz/private-composer-installer#wordpress-plugins) plugin.
-
-## Usage
-
-Use the `register_extended_field_group()` function to register a new field group. It extends the default [`register_field_group()`](https://www.advancedcustomfields.com/resources/register-fields-via-php#example) function provided in the ACF plugin. The difference is that it appends the `key` value to field groups and fields. Below you'll find an example of a field group.
-
+Cela permet aussi de faciliter les options des champs que l'on rentre systématiquement, comme par exemple :
 ```php
-use Extended\ACF\Fields\Image;
-use Extended\ACF\Fields\Text;
-use Extended\ACF\Location;
-
-add_action('acf/init', function() {
-    register_extended_field_group([
-        'title' => 'About',
-        'fields' => [
-            Image::make('Image'),
-            Text::make('Title'),
-        ],
-        'location' => [
-            Location::where('post_type', 'page')
-        ],
-    ]);
-});
+TrueFalse::make('Social Media', 'display_social_media')
+->stylisedUi()
 ```
 
-## Settings
+Cela permet aussi d'avoir une maintenance de champs plus globale. Si nous devons effectuer une modification sur un champ, cela se fera partout.
 
-Visit the official [ACF documentation](https://www.advancedcustomfields.com/resources/register-fields-via-php#group-settings) to read more about the field group settings. Find more examples in the examples directory:
+Chaque classe étend des champs ACF de https://github.com/vinkla/extended-acf.
 
-- [Register custom post type](examples/custom-post-type.php)
-- [Register custom post type with Extended CPT](examples/with-extended-cpts.php)
-- [Register Gutenberg block](examples/gutenberg-block.php)
-- [Register option page](examples/option-page.php)
+Cela permet de pouvoir utiliser les méthodes de base des champs ACF, mais aussi d'avoir des méthodes supplémentaires.
 
-## Fields
-
-### Basic Fields
-
-**Email** - The [email field](https://www.advancedcustomfields.com/resources/text) creates a simple email input.
-
+**Exemple :**
 ```php
-use Extended\ACF\Fields\Email;
-
-Email::make('Email')
-    ->instructions('Add the employees email address.')
+TextField::make()
+    ->instructions('Add the employees name.')
+    ->characterLimit(100)
     ->required();
 ```
 
-**Number** - The [number field](https://www.advancedcustomfields.com/resources/text) creates a simple number input.
+## Typography
 
-```php
-use Extended\ACF\Fields\Number;
+### HeadingField
 
-Number::make('Age')
-    ->instructions('Add the employees age.')
-    ->min(18)
-    ->max(65)
-    ->required();
-```
-
-**Password** - The [password field](https://www.advancedcustomfields.com/resources/text) creates a simple password input.
-
-```php
-use Extended\ACF\Fields\Password;
-
-Password::make('Password')
-    ->instructions('Add the employees secret pwned password.')
-    ->required();
-```
-
-**Range** - The [range](https://www.advancedcustomfields.com/resources/range) field provides an interactive experience for selecting a numerical value.
-
-```php
-use Extended\ACF\Fields\Range;
-
-Range::make('Rate')
-    ->instructions('Add the employees completion rate.')
-    ->min(0)
-    ->max(100)
-    ->step(10)
-    ->required();
-```
-
-**Text** - The text field creates a simple text input.
+**Heading** - Champ titre
 
 ```php
 use Adeliom\Lumberjack\Admin\Fields\Typography;
-`
 
-Text::make();
+HeadingField::make(?string $label = "Titre", ?string $name = "title");
+
+// Champs groupés (Titre + HTML tag)
+HeadingField::make()
+    ->tag(?array $choices = [], ?string $instructions = "Choisir un tag HTML");
 ```
+![img_3.png](img_3.png)
 
-**Textarea** - The [textarea field](https://www.advancedcustomfields.com/resources/textarea) creates a simple textarea.
+
+### IconField
+
+**Icon** - Champ icône
 
 ```php
-use Extended\ACF\Fields\Textarea;
+use Adeliom\Lumberjack\Admin\Fields\Typography;
 
-Textarea::make('Biography')
-    ->instructions('Add the employees biography.')
-    ->newLines('br') // br or wpautop
-    ->characterLimit(2000)
-    ->rows(10)
-    ->required();
+IconField::make(?string $label = "Icône", ?string $name = "icon");
 ```
 
-**URL** - The [url field](https://www.advancedcustomfields.com/resources/text) creates a simple url input.
+### TextAreaField
+
+**Textarea** - Champ textarea
 
 ```php
-use Extended\ACF\Fields\Url;
+use Adeliom\Lumberjack\Admin\Fields\Typography;
 
-Url::make('Website')
-    ->instructions('Add the employees website link.')
-    ->required();
+TextareaField::make(?string $label = "Description", ?string|null $name = "description");
 ```
 
-### Choice Fields
 
-**Button Group** - The [button group](https://www.advancedcustomfields.com/resources/button-group) field creates a list of radio buttons.
+
+### TextField
+
+**Text** - Champ texte simple
 
 ```php
-use Extended\ACF\Fields\ButtonGroup;
+use Adeliom\Lumberjack\Admin\Fields\Typography;
 
-ButtonGroup::make('Color')
-    ->instructions('Select the box shadow color.')
-    ->choices([
-        'cyan' => 'Cyan',
-        'hotpink' => 'Hotpink',
-    ])
-    ->defaultValue('hotpink')
-    ->returnFormat('value') // array, label or value (default)
-    ->required();
+TextField::make(?string $label = "Contenu", ?string $name = "Contenu");
 ```
 
-**Checkbox** - The [checkbox field](https://www.advancedcustomfields.com/resources/checkbox) creates a list of tick-able inputs.
+### UptitleField
+
+**UpTitle** - Champ sur-titre simple
 
 ```php
-use Extended\ACF\Fields\Checkbox;
+use Adeliom\Lumberjack\Admin\Fields\Typography;
 
-Checkbox::make('Color')
-    ->instructions('Select the border color.')
-    ->choices([
-        'cyan' => 'Cyan',
-        'hotpink' => 'Hotpink',
-    ])
-    ->defaultValue('cyan')
-    ->returnFormat('value') // array, label or value (default)
-    ->layout('horizontal') // vertical or horizontal
-    ->required();
+UptitleField::make(?string $label = "Sur-titre", ?string|null $name = "uptitle");
 ```
 
-**Radio** - The [radio button field](https://www.advancedcustomfields.com/resources/radio-button) creates a list of select-able inputs.
+### WysiwygField
+**Wysiwyg** - Champ wysiwyg
 
 ```php
-use Extended\ACF\Fields\RadioButton;
+use Adeliom\Lumberjack\Admin\Fields\Typography;
 
-RadioButton::make('Color')
-    ->instructions('Select the text color.')
-    ->choices([
-        'cyan' => 'Cyan',
-        'hotpink' => 'Hotpink',
-    ])
-    ->defaultValue('hotpink')
-    ->returnFormat('value') // array, label or value (default)
-    ->required();
+WysiwygField::make(?string $label = "Description", ?string|null $name = "wysiwyg");
+
+WysiwygField::make()->simple(); // Toolbar simple = bold, italic, underline...
+WysiwygField::make()->default(); // Toolbar complète = gestion des formats et des styles
 ```
 
-**Select** - The [select field](https://www.advancedcustomfields.com/resources/select) creates a drop down select or multiple select input.
+## Buttons
+### ButtonField
 
 ```php
-use Extended\ACF\Fields\Select;
+use Adeliom\Lumberjack\Admin\Fields\Buttons;
 
-Select::make('Color')
-    ->instructions('Select the background color.')
-    ->choices([
-        'cyan' => 'Cyan',
-        'hotpink' => 'Hotpink',
-    ])
-    ->defaultValue('cyan')
-    ->returnFormat('value') // array, label or value (default)
-    ->allowMultiple()
-    ->allowNull()
-    ->required();
+// Arguments par défault
+ButtonField::make(?string $label = "Bouton", string|null $name = "button");
 ```
 
-**True False** - The [true / false field](https://www.advancedcustomfields.com/resources/true-false) allows you to select a value that is either 1 or 0.
-
 ```php
-use Extended\ACF\Fields\TrueFalse;
+//Basic usage
+ButtonField::make();
+```
+![img_1.png](img_1.png)
+```php
+//Options de type
+ButtonField::make()->types();
+```
+![img.png](img.png)
+```php
+//Options de groupe
+ButtonField::make()->group();
+```
+![img_2.png](img_2.png)
 
-TrueFalse::make('Social Media', 'display_social_media')
-    ->instructions('Select whether to display social media links or not.')
-    ->defaultValue(false)
-    ->stylisedUi() // optional on and off text labels
-    ->required();
+## Choices
+
+### CheckboxField
+
+**Checkbox** - Champ de choix, aucun argument par défaut
+```php
+use Adeliom\Lumberjack\Admin\Fields\Choices;
+
+CheckboxField::make(?string $label = "", ?string|null $name = "")
+
+//Basic usage
+CheckboxField::make();
 ```
 
-### Content Fields
+### RadioField
 
-**File** - The [file field](https://www.advancedcustomfields.com/resources/file) allows a file to be uploaded and selected.
-
+**Radio** - Champ de choix, aucun argument par défaut
 ```php
-use Extended\ACF\Fields\File;
+use Adeliom\Lumberjack\Admin\Fields\Choices;
 
-File::make('Resturant Menu', 'menu')
-    ->instructions('Add the menu <strong>pdf</strong> file.')
-    ->mimeTypes(['pdf'])
-    ->library('all') // all or uploadedTo
-    ->fileSize('400 KB', 5) // MB if entered as int
-    ->returnFormat('array') // id, url or array (default)
-    ->required();
+RadioField::make(?string $label = "", ?string|null $name = "")
+
+//Basic usage
+RadioField::make();
 ```
 
-**Gallery** - The [gallery field](https://www.advancedcustomfields.com/resources/gallery) provides a simple and intuitive interface for managing a collection of images.
+### SelectField
 
+**Select** - Champ de choix, aucun argument par défaut
 ```php
-use Extended\ACF\Fields\Gallery;
+use Adeliom\Lumberjack\Admin\Fields\Choices;
 
-Gallery::make('Images')
-    ->instructions('Add the gallery images.')
-    ->mimeTypes(['jpg', 'jpeg', 'png'])
-    ->height(500, 1400)
-    ->width(1000, 2000)
-    ->min(1)
-    ->max(6)
-    ->fileSize('400 KB', 5) // MB if entered as int
-    ->library('all') // all or uploadedTo
-    ->returnFormat('array') // id, url or array (default)
-    ->previewSize('medium') // thumbnail, medium or large
-    ->required();
+SelectField::make(?string $label = "", ?string|null $name = "")
+
+//Basic usage
+SelectField::make();
 ```
 
-**Image** - The [image field](https://www.advancedcustomfields.com/resources/image) allows an image to be uploaded and selected.
+### TrueFalseField
+
+**TrueFalse** - Champ vrai/faux
 
 ```php
-use Extended\ACF\Fields\Image;
+use Adeliom\Lumberjack\Admin\Fields\Choices;
 
-Image::make('Background Image')
-    ->instructions('Add an image in at least 12000x100px and only in the formats <strong>jpg</strong>, <strong>jpeg</strong> or <strong>png</strong>.')
-    ->mimeTypes(['jpg', 'jpeg', 'png'])
-    ->height(500, 1400)
-    ->width(1000, 2000)
-    ->fileSize('400 KB', 5) // MB if entered as int
-    ->library('all') // all or uploadedTo
-    ->returnFormat('array') // id, url or array (default)
-    ->previewSize('medium') // thumbnail, medium or large
-    ->required();
+TrueFalseField::make(?string $label = "", ?string|null $name = "")
+    ->stylisedUi(); //par défaut
+
+//Basic usage
+TrueFalseField::make();
 ```
 
-**Oembed** - The [oEmbed field](https://www.advancedcustomfields.com/resources/oembed) allows an easy way to embed videos, images, tweets, audio, and other content.
+## Medias
+
+### FileField
+**File** - Champ upload de fichiers
 
 ```php
-use Extended\ACF\Fields\Oembed;
+use Adeliom\Lumberjack\Admin\Fields\Medias;
 
-Oembed::make('Tweet')
-    ->instructions('Add a tweet from Twitter.')
-    ->required();
+FileField::make(?string $label = "Fichier", ?string|null $name = "file");
+
+FileField::make()->pdf();
+```
+### GalleryField
+@TODO
+
+
+### ImageField
+**Image** - Champ image
+
+```php
+use Adeliom\Lumberjack\Admin\Fields\Medias;
+
+ImageField::make(?string $label = "Image", ?string|null $name = "image");
+
+ImageField::make()->ratio(int $width = null, int $height = null); // Instructions pour un ratio
 ```
 
-**WYSIWYG** - The [WYSIWYG field](https://www.advancedcustomfields.com/resources/wysiwyg-editor) creates a full WordPress tinyMCE content editor.
+### VideoField
+**Vidéo** - Champ vidéo (gestion de la thumbnail, vidéo mp4 ou ID youtube)
 
 ```php
-use Extended\ACF\Fields\WysiwygEditor;
+use Adeliom\Lumberjack\Admin\Fields\Medias;
 
-WysiwygEditor::make('Content')
-    ->instructions('Add the text content.')
-    ->mediaUpload(false)
-    ->tabs('visual')
-    ->toolbar('simple') // toolbar name in snake_case
-    ->required();
+VideoField::make();
 ```
 
-### jQuery Fields
-
-**Color Picker** - The [color picker field](https://www.advancedcustomfields.com/resources/color-picker) allows a color to be selected via a JavaScript popup.
+### MediaField
+**Média** - Champ média (choix entre image ou vidéo)
 
 ```php
-use Extended\ACF\Fields\ColorPicker;
+use Adeliom\Lumberjack\Admin\Fields\Medias;
 
-ColorPicker::make('Text Color')
-    ->instructions('Add the text color.')
-    ->defaultValue('#4a9cff')
-    ->required();
+MediaField::make(string $instructions = "", array $includes = ["image", "video"]);
 ```
 
-**Date Picker** - The [date picker field](https://www.advancedcustomfields.com/resources/date-picker) creates a jQuery date selection popup.
+## Relations
+
+### PostField
+**Post** - Champ relationnel
 
 ```php
-use Extended\ACF\Fields\DatePicker;
+use Adeliom\Lumberjack\Admin\Fields\Relations;
 
-DatePicker::make('Birthday')
-    ->instructions('Add the employee\'s birthday.')
-    ->displayFormat('d/m/Y')
-    ->returnFormat('d/m/Y')
-    ->required();
+PostField::make(?string $label = "Page", ?string|null $name = "post")
+            ->returnFormat('object') //default
+            ->allowNull(); //default
+
+//Basic usage
+PostField::make();
 ```
 
-**Time Picker** - The [time picker field](https://www.advancedcustomfields.com/resources/time-picker) creates a jQuery time selection popup.
+### RelationField
+**Relationship** - Champ relationnel
 
 ```php
-use Extended\ACF\Fields\TimePicker;
+use Adeliom\Lumberjack\Admin\Fields\Relations;
 
-TimePicker::make('Start Time', 'time')
-    ->instructions('Add the start time.')
-    ->displayFormat('H:i')
-    ->returnFormat('H:i')
-    ->required();
+RelationField::make(?string $label = "Page", ?string|null $name = "post")
+            ->returnFormat('object') //default
+            ->allowNull(); //default
+
+//Basic usage
+RelationField::make();
 ```
 
-**Date Time Picker** - The [date time picker field](https://www.advancedcustomfields.com/resources/date-time-picker) creates a jQuery date & time selection popup.
+### TaxonomyField
+**Taxonomy** - Champ relationnel d'une taxonomy
 
 ```php
-use Extended\ACF\Fields\DateTimePicker;
+use Adeliom\Lumberjack\Admin\Fields\Relations;
 
-DateTimePicker::make('Event Date', 'date')
-    ->instructions('Add the event\'s start date and time.')
-    ->displayFormat('d-m-Y H:i')
-    ->returnFormat('d-m-Y H:i')
-    ->required();
+TaxonomyField::make(?string $label = "Catégorie", ?string|null $name = "category")
+        ->addTerm(false) //default
+        ->loadTerms(false) //default
+        ->saveTerms(true) //default
+        ->appearance('select') //default
+        ->returnFormat('object'); //default
+
+//Basic usage
+TaxonomyField::make();
 ```
 
-**Google Map** - The [Google Map field](https://www.advancedcustomfields.com/resources/google-map) creates an interactive map with the ability to place a marker.
-
+## Tabs
+**Usage** - Usage global à l'ensemble des champs "onglet"
 ```php
-use Extended\ACF\Fields\GoogleMap;
+use Adeliom\Lumberjack\Admin\Fields\Tabs;
 
-GoogleMap::make('Address', 'address')
-    ->instructions('Add the Google Map address.')
-    ->center(57.456286, 18.377716)
-    ->zoom(14)
-    ->required();
-```
-
-### Layout Fields
-
-**Accordion** - The [accordion field](https://www.advancedcustomfields.com/resources/accordion) is used to organize fields into collapsible panels.
-
-```php
-use Extended\ACF\Fields\Accordion;
-
-Accordion::make('Address')
-    ->open()
-    ->multiExpand(),
-
-// Allow accordion to remain open when other accordions are opened.
-// Any field after this accordion will become a child.
-
-Accordion::make('Endpoint')
-    ->endpoint()
-    ->multiExpand(),
-
-// This field will not be visible, but will end the accordion above.
-// Any fields added after this will not be a child to the accordion.
-```
-
-**Clone** - The [clone field](https://www.advancedcustomfields.com/resources/clone) allows you to select and display existing fields or groups. This field doesn't have a custom field class. Instead create a new file with your field and import it using `require` where you need it.
-
-`occupation.php`
-
-```php
-use Extended\ACF\Fields\Text;
-
-return Text::make('Occupation')
-    ->instructions('Add the employees occupation.')
-    ->required();
-```
-
-`employee.php`
-
-```php
-register_extended_field_group([
-    'fields' => [
-        require __DIR__.'/fields/occupation.php';
-    ]
+ContentTab::make()->fields([
+    TextField::make(),
+    TextareaField::make()
 ]);
 ```
 
-**Flexible Content** - The [flexible content field](https://www.advancedcustomfields.com/resources/flexible-content) acts as a blank canvas to which you can add an unlimited number of layouts with full control over the order.
-```php
-use Extended\ACF\Fields\FlexibleContent;
-use Extended\ACF\Fields\Layout;
-use Extended\ACF\Fields\Text;
-
-FlexibleContent::make('Components', 'page_components')
-    ->instructions('Add the employees occupation.')
-    ->buttonLabel('Add a page component')
-    ->layouts([
-        Layout::make('Image')
-            ->layout('block')
-            ->fields([
-                Text::make('Description')
-            ])
-    ])
-    ->required();
-```
-
-**Group** - The [group](https://www.advancedcustomfields.com/resources/group) allows you to create a group of sub fields.
+### ContentTab
+**ContentTab** - Champs onglet pour le contenu standard
 
 ```php
-use Extended\ACF\Fields\Group;
-use Extended\ACF\Fields\Image;
-use Extended\ACF\Fields\Text;
+use Adeliom\Lumberjack\Admin\Fields\Tabs;
 
-Group::make('Hero')
-    ->instructions('Add a hero block with title, content and image to the page.')
-    ->fields([
-        Text::make('Title'),
-        Image::make('Background Image'),
-    ])
-    ->layout('row')
-    ->required();
+ContentTab::make(?string $label = "Contenu", ?string|null $name = "content_tab");
+
+//exemple
+ContentTab::make()->fields([
+    HeadingField::make(),
+    WysiwygField::make()->default(),
+]);
 ```
 
-**Message** - The message fields allows you to display a text message.
+![img_5.png](img_5.png)
+
+### GlobalTab
+**GlobalTab** - Champs onglet pour le contenu global
 
 ```php
-use Extended\ACF\Fields\Message;
+use Adeliom\Lumberjack\Admin\Fields\Tabs;
 
-Message::make('Message')
-    ->message('George. One point twenty-one gigawatts.')
-    ->escapeHtml();
+GlobalTab::make(?string $label = "Global", ?string|null $name = "global_tab");
+
+//exemple
+GlobalTab::make()->fields([
+    TextField::make(),
+]);
 ```
 
-**Repeater** - The [repeater field](https://www.advancedcustomfields.com/resources/repeater) allows you to create a set of sub fields which can be repeated again and again whilst editing content!
+![img_6.png](img_6.png)
+
+### LayoutTab
+**LayoutTab** - Champs onglet pour la gestion de la mise en page (ex: position média, suppression des marges...)
 
 ```php
-use Extended\ACF\Fields\Image;
-use Extended\ACF\Fields\Repeater;
-use Extended\ACF\Fields\Text;
+use Adeliom\Lumberjack\Admin\Fields\Tabs;
 
-Repeater::make('Employees')
-    ->instructions('Add the employees.')
-    ->fields([
-        Text::make('Name'),
-        Image::make('Profile Picture'),
-    ])
-    ->min(2)
-    ->collapsed('name')
-    ->buttonLabel('Add employee')
-    ->pagination(10)
-    ->layout('table') // block, row or table
-    ->required();
+LayoutTab::make(?string $label = "Mise en page", ?string|null $name = "layout_tab");
+
+//exemple
+LayoutTab::make()->fields([
+    LayoutField::mediaPosition(),
+]);
 ```
 
-**Tab** - The [tab field](https://www.advancedcustomfields.com/resources/tab) is used to group together fields into tabbed sections. Any fields or groups added after a acf_tab will become a child to that tab. Setting 'endpoint' to true on a tab will create a new group of tabs.
+![img_7.png](img_7.png)
+
+### MediaTab
+**MediaTab** - Champs onglet pour l'affichage des champs médias (media, image, video)
 
 ```php
-use Extended\ACF\Fields\Tab;
+use Adeliom\Lumberjack\Admin\Fields\Tabs;
 
-Tab::make('Tab 1'),
-Tab::make('Tab 2'),
-Tab::make('Tab 3')
-    ->placement('top') // top or left
-    ->endpoint(), // This will make a break in the tabs and create a new group of tabs.
+MediaTab::make(?string $label = "Média", ?string|null $name = "media_tab");
+
+//exemple
+MediaTab::make()->fields([
+    MediaField::make(),
+]);
 ```
 
-### Relational Fields
+![img_8.png](img_8.png)
 
-**Link** - The [link field](https://www.advancedcustomfields.com/resources/link) provides a simple way to select or define a link (url, title, target).
+### SettingsTab
+**SettingsTab** - Champs onglet pour la gestion des paramètres (ex: ancre/identifiant d'un bloc)
 
 ```php
-use Extended\ACF\Fields\Link;
+use Adeliom\Lumberjack\Admin\Fields\Tabs;
 
-Link::make('Read More Link')
-    ->returnFormat('array') // url or array (default)
-    ->required();
+SettingsTab::make(?string $label = "Paramètres", ?string|null $name = "settings_tab");
+
+//exemple
+SettingsTab::make()->fields([
+    SettingsField::anchor(),
+]);
 ```
 
-**Page Link** - The [page link field](https://www.advancedcustomfields.com/resources/page-link) allows the selection of 1 or more posts, pages or custom post types.
+![img_9.png](img_9.png)
+
+### TabField
+**Tab** - Champs onglet classique
 
 ```php
-use Extended\ACF\Fields\PageLink;
+use Adeliom\Lumberjack\Admin\Fields\Tabs;
 
-PageLink::make('Contact Link')
-    ->postTypes(['contact'])
-    ->taxonomies(['category:city'])
-    ->allowArchives() // optionally pass 'false' to disallow archives
-    ->allowNull()
-    ->allowMultiple()
-    ->required();
+TabField::make(string $label = "", ?string|null $name = null);
 ```
 
-**Post Object** - The [post object field](https://www.advancedcustomfields.com/resources/post-object) creates a select field where the choices are your pages + posts + custom post types.
+## Layout
+
+### LayoutField
+```php
+use Adeliom\Lumberjack\Admin\Fields\Layout;
+```
+
+**darkMode** - Champ vrai/faux pour activer/désactiver le dark mode sur une section ou une page
 
 ```php
-use Extended\ACF\Fields\PostObject;
-
-PostObject::make('Animal')
-    ->instructions('Select an animal')
-    ->postTypes(['animal'])
-    ->allowNull()
-    ->allowMultiple()
-    ->returnFormat('object') // id or object (default)
-    ->required();
+LayoutField::darkMode();
 ```
 
-**Relationship** - The [relationship field](https://www.advancedcustomfields.com/resources/relationship) creates a very attractive version of the post object field.
+**mediaPosition** - Champ select pour choisir la position du média (gauche/droite)
 
 ```php
-use Extended\ACF\Fields\Relationship;
-
-Relationship::make('Contacts')
-    ->instructions('Add the contacts.')
-    ->postTypes(['contact'])
-    ->filters([
-        'search', 
-        'post_type',
-        'taxonomy'
-    ])
-    ->elements(['featured_image'])
-    ->min(3)
-    ->max(6)
-    ->returnFormat('object') // id or object (default)
-    ->required();
+LayoutField::mediaPositionarray($choices = [
+        'left'   => 'À gauche',
+        'right'  => 'À droite'
+    ]);
 ```
 
-**Taxonomy** - The [taxonomy field](https://www.advancedcustomfields.com/resources/taxonomy) allows the selection of 1 or more taxonomy terms.
+**margin** - Groupe de champs pour gérer la taille des marges et la suppression de la marge haute et basse des blocs.
 
 ```php
-use Extended\ACF\Fields\Taxonomy;
-
-Taxonomy::make('Cinemas')
-    ->instructions('Select one or more cinema terms.')
-    ->taxonomy('cinema')
-    ->appearance('checkbox') // checkbox, multi_select, radio or select
-    ->addTerm(true) // Allow new terms to be created whilst editing (true or false)
-    ->loadTerms(true) // Load value from posts terms (true or false)
-    ->saveTerms(true) // Connect selected terms to the post (true or false)
-    ->returnFormat('id'); // object or id (default)
+LayoutField::margin(array $fields = [
+        "sizes",
+        "top_remove",
+        "bottom_remove"
+    ]);
 ```
 
-**User** - The user field creates a select field for all your users.
 
+
+## Settings
+
+### SettingsField
+
+**Settings** - Champs permettant d'ajouter des fonctionnalité global au bloc
 ```php
-use Extended\ACF\Fields\User;
-
-User::make('User')
-    ->roles([
-        'administrator',
-        'author'
-    ])
-    ->returnFormat('array'); // id, object or array (default)
-
-// Available roles are administrator, author, subscriber, contributor and editor. Default is no filter.
+use Adeliom\Lumberjack\Admin\Fields\Settings;
 ```
 
-## Location
-
-The location class let you write [custom location rules](https://www.advancedcustomfields.com/resources/custom-location-rules) without the `name`, `operator` and `value` keys. If no `operator` is given it will use the `operator` as the `value`.
-
+**Anchor** - Champ texte pour ajouter une ancre sur un bloc
 ```php
-use Extended\ACF\Location;
+SettingsField::anchor(?string $label = "Ancre", ?string|null $name = "anchor");
 
-Location::where('post_type', 'post')->and('post_type', '!=', 'post');
+//Basic usage
+SettingsField::anchor();
 ```
 
-> **Note:** The `if` method was renamed to `where` in version 12, see the [upgrade guide](#upgrade-guide).
-
-## Conditional Logic
-
-The conditional class help you write conditional logic [without knowing](https://media.giphy.com/media/SbtWGvMSmJIaV8faS8/source.gif) the field keys.
-
-```php
-use Extended\ACF\ConditionalLogic;
-use Extended\ACF\Fields\File;
-use Extended\ACF\Fields\Select;
-use Extended\ACF\Fields\Url;
-
-Select::make('Type')
-    ->choices([
-        'document' => 'Document',
-        'link' => 'Link to resource',
-    ]),
-File::make('Document', 'file')
-    ->conditionalLogic([
-        ConditionalLogic::where('type', '==', 'document') // available operators are ==, !=, >, <, ==pattern, ==contains, ==empty, !=empty
-    ]),
-Url::make('Link', 'url')
-    ->conditionalLogic([
-        ConditionalLogic::where('type', '==', 'link')
-    ]),
-```
-
-## Custom Settings
-
-If you want to add custom settings to the fields, you can use the `withSettings` method. If you add settings which are already registered on the field, they'll be overwritten.
-
-```php
-Text::make('Name')
-	->withSettings(['key' => 'value'])
-	->required()
-```
-
-Another option is to extend field classes available in the package.
-
-```php
-namespace App\Fields;
-
-use Extended\ACF\Fields\Select as Field;
-
-class Select extends Field
-{
-    public function myNewSetting(string $value): self
-    {
-        $this->settings['my-new-settings'] = $value;
-
-        return $this;
-    }
-}
-```
-
-## Custom Fields
-
-If you want to create custom field classes you may extend the [base field class](src/Fields/Field.php). You may also import [available setting traits](src/Fields/Settings) in order to add common methods such as `required()` and `intstructions()`.
-
-```php
-namespace App\Fields;
-
-use Extended\ACF\Fields\Field;
-use Extended\ACF\Fields\Settings\Instructions;
-use Extended\ACF\Fields\Settings\Required;
-
-class OpenStreetMap extends Field
-{
-    use Instructions;
-    use Required;
-
-    protected $type = 'open_street_map';
-
-    public function latitude(float $latitude): static
-    {
-        $this->settings['latitude'] = $latitude;
-
-        return $this;
-    }
-    
-    public function longitude(float $longitude): static
-    {
-        $this->settings['longitude'] = $longitude;
-
-        return $this;
-    }
-    
-    public function zoom(float $zoom): static
-    {
-        $this->settings['zoom'] = $zoom;
-
-        return $this;
-    }
-}
-```
-
-When you're ready you can import use your field like any other field available in this library:
-
-```php
-use App\Fields\OpenStreetMap;
-
-OpenStreetMap::make('Map')
-    ->latitude(56.474)
-    ->longitude(11.863)
-    ->zoom(10);
-```
-
-## Upgrade Guide
-
-This upgrade guide contains information on breaking changes in major releases of the package.
-
-### 13
-
-The package has been renamed to `vinkla/extended-acf`. If you're using version 12 or lower, you may simply change the package name in your `composer.json` file and everything will work as before.
-
-```diff
--"wordplate/acf": "^12.0",
-+"vinkla/extended-acf": "^12.0"
-```
-
-If you're upgrading to version 13, you'll also need to change your imports. The namespace has been changed to `Extended\ACF`.
-
-```diff
--use WordPlate\Acf\Fields\Text;
--use WordPlate\Acf\Fields\Number;
-+use Extended\ACF\Fields\Text;
-+use Extended\ACF\Fields\Number;
-```
-
-### 12
-
-The location query method `if` has been changed to `where`, you'll need to update your field groups accordingly.
-
-```diff
-use Extended\ACF\Location;
-
--Location::if('post_type', 'post');
-+Location::where('post_type', 'post');
-```
+![img_4.png](img_4.png)
