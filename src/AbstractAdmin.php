@@ -17,6 +17,8 @@ abstract class AbstractAdmin
 {
     public const TITLE = 'abstract';
     public const IS_OPTION_PAGE = false;
+    public const IS_SUB_OPTION_PAGE = false;
+    public const PARENT_SLUG = null;
 
     /**
      * An list of fields
@@ -33,6 +35,7 @@ abstract class AbstractAdmin
         if (function_exists('acf_add_options_page') && static::IS_OPTION_PAGE) {
             yield Location::where('options_page', static::getSlug());
         }
+
         return [];
     }
 
@@ -114,7 +117,9 @@ abstract class AbstractAdmin
             'menu_title' => static::TITLE,
             'menu_slug'  => static::getSlug(),
             'capability' => 'edit_theme_options',
-            'autoload' => true
+            'autoload' => true,
+            'parent_slug' => static::PARENT_SLUG,
+
         ];
     }
 
@@ -138,6 +143,11 @@ abstract class AbstractAdmin
         if (function_exists('acf_add_options_page') && static::IS_OPTION_PAGE) {
             $options = static::setupOptionPage();
             acf_add_options_page($options);
+        }
+
+        if (function_exists('acf_add_options_sub_page') && static::IS_OPTION_PAGE && static::IS_SUB_OPTION_PAGE) {
+            $options = static::setupOptionPage();
+            acf_add_options_sub_page($options);
         }
 
         register_extended_field_group([
