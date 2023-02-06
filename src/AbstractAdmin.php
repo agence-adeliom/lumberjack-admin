@@ -89,7 +89,6 @@ abstract class AbstractAdmin
             'slug',
             'author',
             'format',
-            'page_attributes',
             'categories',
             'tags',
             'send-trackbacks',
