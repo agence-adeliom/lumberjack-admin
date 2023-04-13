@@ -25,7 +25,7 @@ class ButtonField extends Link
     /**
      * Type de boutons
      */
-    public function types(string $title = "Types", $typeInstructions = "", array $choices = []): Group
+    public function types(string $title = "Bouton", $typeInstructions = "", array $choices = []): Group
     {
 
         if (empty($choices)) {
