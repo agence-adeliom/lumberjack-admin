@@ -2,6 +2,7 @@
 
 namespace Adeliom\Lumberjack\Admin\Fields\Layout;
 
+use Extended\ACF\ConditionalLogic;
 use Extended\ACF\Fields\Group;
 use Extended\ACF\Fields\RadioButton;
 use Extended\ACF\Fields\Select;
@@ -17,6 +18,10 @@ class LayoutField
     public const MARGIN_SIZES = "sizes";
     public const MARGIN_TOP_REMOVE = "top_remove";
     public const MARGIN_BOTTOM_REMOVE = "bottom_remove";
+
+    private const MEDIA_RATIO = "media_ratio";
+    private const HAS_MEDIA_RATIO = "has_ratio";
+    private const MEDIA_RATIO_VALUE = "ratio";
 
     public static function darkMode(): TrueFalse
     {
@@ -68,5 +73,22 @@ class LayoutField
         }
 
         return Group::make("Marges", self::MARGIN)->fields($fieldsGroup);
+    }
+
+    public static function mediaRatio(): Group
+    {
+        $fieldsGroup = [
+            TrueFalse::make("Contraindre le ratio du média", self::HAS_MEDIA_RATIO)
+                ->stylisedUi(),
+            RadioButton::make("Ratio", self::MEDIA_RATIO_VALUE)->choices([
+                "auto" => "Automatique",
+                "paysage" => "Paysage",
+                "portrait" => "Portrait"
+            ])->conditionalLogic([
+                ConditionalLogic::where("has_ratio", "==", 1)
+            ]),
+        ];
+
+        return Group::make("Ratio du média", self::MEDIA_RATIO)->fields($fieldsGroup);
     }
 }
