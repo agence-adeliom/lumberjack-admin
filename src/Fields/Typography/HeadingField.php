@@ -28,7 +28,7 @@ class HeadingField extends Text
             ->fields($fields);
     }
 
-    private static function htmlTag(array $choices = [], string $instructions = ""): Select
+    public static function htmlTag(array $choices = [], string $instructions = ""): Select
     {
         $defaultChoices = [
             "div" => "Aucun",
