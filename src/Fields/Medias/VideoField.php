@@ -10,11 +10,11 @@ use Extended\ACF\Fields\Text;
 
 class VideoField
 {
-    public constVIDEO = "video";
-    public constTHUMBNAIL = "thumbnail";
-    public constVIDEO_FILE = "file";
-    public constIS_YOUTUBE = "is_youtube";
-    public constID_YOUTUBE = "id";
+    public const VIDEO = "video";
+    public const THUMBNAIL = "thumbnail";
+    public const VIDEO_FILE = "file";
+    public const IS_YOUTUBE = "is_youtube";
+    public const ID_YOUTUBE = "id";
 
     /**
      * Vidéo

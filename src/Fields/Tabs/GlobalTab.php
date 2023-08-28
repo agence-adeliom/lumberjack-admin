@@ -9,7 +9,7 @@ class GlobalTab extends Tab
 {
     use Fields;
 
-    public constTAB = "global_tab";
+    public const TAB = "global_tab";
 
     public static function make(string $label = "Global", string|null $name = self::TAB): static
     {

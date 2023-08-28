@@ -9,7 +9,7 @@ class ContentTab extends Tab
 {
     use Fields;
 
-    public constTAB = "content_tab";
+    public const TAB = "content_tab";
 
     public static function make(string $label = "Contenu", string|null $name = self::TAB): static
     {

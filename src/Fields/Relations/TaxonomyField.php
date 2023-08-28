@@ -6,7 +6,7 @@ use Extended\ACF\Fields\Taxonomy;
 
 class TaxonomyField extends Taxonomy
 {
-    public constCATEGORY = 'category';
+    public const CATEGORY = 'category';
 
     public static function make(string $label = "Catégorie", string|null $name = self::CATEGORY): static
     {

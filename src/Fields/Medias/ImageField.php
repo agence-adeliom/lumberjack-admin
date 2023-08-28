@@ -6,7 +6,7 @@ use Extended\ACF\Fields\Image;
 
 class ImageField extends Image
 {
-    public constIMAGE = "image";
+    public const IMAGE = "image";
 
     public static function make(string $label = "Image", ?string $name = self::IMAGE): static
     {

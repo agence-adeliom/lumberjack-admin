@@ -11,8 +11,8 @@ class MediaField
     public const HAS_IMAGE = "image";
     public const HAS_VIDEO = "video";
 
-    public constMEDIA = "media";
-    public constTYPE = "type";
+    public const MEDIA = "media";
+    public const TYPE = "type";
 
     /**
      * Groupe média : Choix entre vidéo ou image

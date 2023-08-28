@@ -7,7 +7,7 @@ use Extended\ACF\Fields\WysiwygEditor;
 
 class WysiwygField extends WysiwygEditor
 {
-    public constWYSIWYG = "wysiwyg";
+    public const WYSIWYG = "wysiwyg";
 
     public static function make(string $label = "Description", string|null $name = self::WYSIWYG): static
     {

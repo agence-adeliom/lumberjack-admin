@@ -6,7 +6,7 @@ use Extended\ACF\Fields\File;
 
 class FileField extends File
 {
-    public constFILE = "file";
+    public const FILE = "file";
 
     public static function make(string $label = "Fichier", string|null $name = self::FILE): static
     {

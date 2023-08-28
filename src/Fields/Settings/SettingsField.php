@@ -6,7 +6,7 @@ use Extended\ACF\Fields\Text;
 
 class SettingsField
 {
-    public constANCHOR = "anchor";
+    public const ANCHOR = "anchor";
 
     public static function anchor(): Text
     {

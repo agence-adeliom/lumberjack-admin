@@ -8,13 +8,13 @@ use Extended\ACF\Fields\Select;
 
 class ButtonField extends Link
 {
-    public constBUTTON = "button";
-    public constBUTTON_TYPE = "type";
-    public constBUTTON_LINK = "link";
+    public const BUTTON = "button";
+    public const BUTTON_TYPE = "type";
+    public const BUTTON_LINK = "link";
 
-    public constBUTTONS = "buttons";
-    public constBUTTON_ONE = "one";
-    public constBUTTON_TWO = "two";
+    public const BUTTONS = "buttons";
+    public const BUTTON_ONE = "one";
+    public const BUTTON_TWO = "two";
 
 
     public static function make(string $label = "Bouton", string|null $name = self::BUTTON): static

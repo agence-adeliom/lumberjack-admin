@@ -9,7 +9,7 @@ class LayoutTab extends Tab
 {
     use Fields;
 
-    public constTAB = "layout_tab";
+    public const TAB = "layout_tab";
 
     public static function make(string $label = "Mise en page", string|null $name = self::TAB): static
     {
