@@ -6,6 +6,7 @@ use Extended\ACF\Fields\Group;
 use Extended\ACF\Fields\RadioButton;
 use Extended\ACF\Fields\Select;
 use Extended\ACF\Fields\TrueFalse;
+use Extended\ACF\ConditionalLogic;
 
 class LayoutField
 {
