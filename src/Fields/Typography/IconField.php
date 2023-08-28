@@ -8,7 +8,7 @@ class IconField extends Text
 {
     protected string|null $type = 'font-awesome';
 
-    private const ICON = "icon";
+    public const ICON = "icon";
 
     /**
      * Icône

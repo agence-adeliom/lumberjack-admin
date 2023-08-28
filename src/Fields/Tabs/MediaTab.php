@@ -9,7 +9,7 @@ class MediaTab extends Tab
 {
     use Fields;
 
-    private const TAB = "media_tab";
+    public constTAB = "media_tab";
 
     public static function make(string $label = "Média", string|null $name = self::TAB): static
     {

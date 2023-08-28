@@ -6,7 +6,7 @@ use Extended\ACF\Fields\Relationship;
 
 class RelationField extends Relationship
 {
-    private const POST = 'post';
+    public constPOST = 'post';
 
     public static function make(string $label = "Page", string|null $name = self::POST): static
     {

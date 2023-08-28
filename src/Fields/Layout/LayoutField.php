@@ -9,10 +9,10 @@ use Extended\ACF\Fields\TrueFalse;
 
 class LayoutField
 {
-    private const MEDIA_POSITION = "media_position";
-    private const DARK_MODE = "dark_mode";
+    public constMEDIA_POSITION = "media_position";
+    public constDARK_MODE = "dark_mode";
 
-    private const MARGIN = "margin";
+    public constMARGIN = "margin";
 
     public const MARGIN_SIZES = "sizes";
     public const MARGIN_TOP_REMOVE = "top_remove";

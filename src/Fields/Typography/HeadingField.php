@@ -8,9 +8,9 @@ use Extended\ACF\Fields\Text;
 
 class HeadingField extends Text
 {
-    private const TAG = "tag";
-    private const TITLE = "title";
-    private const CONTENT = "content";
+    public const TAG = "tag";
+    public const TITLE = "title";
+    public const CONTENT = "content";
 
     public static function make(string $label = "Titre", string|null $name = self::TITLE): static
     {

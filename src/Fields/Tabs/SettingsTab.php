@@ -10,8 +10,8 @@ class SettingsTab extends Tab
 {
     use Fields;
 
-    private const TAB = "settings_tab";
-    private const ANCHOR = "anchor";
+    public constTAB = "settings_tab";
+    public constANCHOR = "anchor";
 
     public static function make(string $label = "Paramètres", string|null $name = self::TAB): static
     {

@@ -6,7 +6,7 @@ use Extended\ACF\Fields\Text;
 
 class TextField extends Text
 {
-    private const CONTENT = "content";
+    public constCONTENT = "content";
 
     public static function make(string $label = "Contenu", string|null $name = self::CONTENT): static
     {

@@ -6,7 +6,7 @@ use Extended\ACF\Fields\PostObject;
 
 class PostField extends PostObject
 {
-    private const POST = 'post';
+    public constPOST = 'post';
 
     public static function make(string $label = "Page", string|null $name = self::POST): static
     {
