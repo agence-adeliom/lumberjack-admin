@@ -9,14 +9,18 @@ use Extended\ACF\Fields\TrueFalse;
 
 class LayoutField
 {
-    public constMEDIA_POSITION = "media_position";
-    public constDARK_MODE = "dark_mode";
+    public const MEDIA_POSITION = "media_position";
+    public const DARK_MODE = "dark_mode";
 
-    public constMARGIN = "margin";
+    public const MARGIN = "margin";
 
     public const MARGIN_SIZES = "sizes";
     public const MARGIN_TOP_REMOVE = "top_remove";
     public const MARGIN_BOTTOM_REMOVE = "bottom_remove";
+
+    public const MEDIA_RATIO = "media_ratio";
+    public const HAS_MEDIA_RATIO = "has_ratio";
+    public const MEDIA_RATIO_VALUE = "ratio";
 
     public static function darkMode(): TrueFalse
     {
@@ -68,5 +72,22 @@ class LayoutField
         }
 
         return Group::make("Marges", self::MARGIN)->fields($fieldsGroup);
+    }
+
+    public static function mediaRatio(): Group
+    {
+        $fieldsGroup = [
+            TrueFalse::make("Contraindre le ratio du média", self::HAS_MEDIA_RATIO)
+                ->stylisedUi(),
+            RadioButton::make("Ratio", self::MEDIA_RATIO_VALUE)->choices([
+                "auto" => "Automatique",
+                "paysage" => "Paysage",
+                "portrait" => "Portrait"
+            ])->conditionalLogic([
+                ConditionalLogic::where("has_ratio", "==", 1)
+            ]),
+        ];
+
+        return Group::make("Ratio du média", self::MEDIA_RATIO)->fields($fieldsGroup);
     }
 }
