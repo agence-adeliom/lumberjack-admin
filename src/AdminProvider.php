@@ -46,17 +46,37 @@ class AdminProvider extends ServiceProvider
                 include($file);
             }
         }
+
+        $subOptionClasses = [];
+        $otherClasses = [];
+
         /** @var AbstractAdmin $class */
         foreach (get_declared_classes() as $class) {
-            if (str_contains($class, "App\Admin")) {
+            if (str_contains($class, "App\\Admin")) {
                 try {
                     $classMeta = new \ReflectionClass($class);
+
                     if ($classMeta->isSubclassOf(AbstractAdmin::class)) {
-                        $class::register();
+
+                        if ($classMeta->getConstant('IS_SUB_OPTION_PAGE') === true) {
+                            $subOptionClasses[] = $class;
+                        } else {
+                            $otherClasses[] = $class;
+                        }
                     }
                 } catch (\ReflectionException $reflectionException) {
                 }
             }
+        }
+
+        // Register other classes first
+        foreach ($otherClasses as $class) {
+            $class::register();
+        }
+
+        // Then register sub option classes
+        foreach ($subOptionClasses as $class) {
+            $class::register();
         }
     }
 
