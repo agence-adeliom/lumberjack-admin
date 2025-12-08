@@ -3,9 +3,9 @@
     "keywords": ["hooks", "wordpress", "timber", "lumberjack", "acf"],
     "license": "MIT",
     "require": {
-        "php": ">=8.0.2",
+        "php": ">=8.2",
         "rareloop/lumberjack-core": "^5.0|^6.0",
-        "vinkla/extended-acf": "^13.0",
+        "vinkla/extended-acf": "^14.0",
         "symfony/string": "^5.4|^6.0",
         "symfony/translation-contracts": "^3.0"
     },
@@ -17,6 +17,12 @@
     "config": {
         "allow-plugins": {
             "composer/installers": true
-        }
+        },
+      "audit": {
+        "ignore": [
+          "PKSA-yhcn-xrg3-68b1",
+          "PKSA-2wrf-1xmk-1pky"
+        ]
+      }
     }
 }
