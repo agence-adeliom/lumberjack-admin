@@ -110,7 +110,9 @@ class Block
         'align' => false,
         'align_text' => false,
         'align_content' => false,
-        'jsx' => false
+        'jsx' => false,
+        // Désactive le champ « CSS additionnel » par bloc ajouté par WordPress 7.0.
+        'customCSS' => false,
     ];
 
     /**
