@@ -15,7 +15,7 @@ class ImageField extends Image
             ->returnFormat('array');
     }
 
-    public function ratio(int $width = null, int $height = null): static
+    public function ratio(?int $width = null, ?int $height = null): static
     {
         if (null !== $width && null !== $height) {
             $this->settings['instructions'] = "Ratio recommandé : " . $width . "x" . $height . "px";

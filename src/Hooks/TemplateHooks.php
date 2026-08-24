@@ -40,7 +40,7 @@ class TemplateHooks
      * @param string|null $postType
      * @return bool
      */
-    public static function disabledGutenberg(bool $canEdit, string $postType = null): bool
+    public static function disabledGutenberg(bool $canEdit, ?string $postType = null): bool
     {
         $config = Config::get('gutenberg.templates', []);
 

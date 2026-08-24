@@ -3,8 +3,8 @@
     "keywords": ["hooks", "wordpress", "timber", "lumberjack", "acf"],
     "license": "MIT",
     "require": {
-        "php": ">=8.0.2",
-        "rareloop/lumberjack-core": "^5.0|^6.0",
+        "php": ">=8.3",
+        "rareloop/lumberjack-core": "^8.0",
         "vinkla/extended-acf": "^13.0",
         "symfony/string": "^5.4|^6.0",
         "symfony/translation-contracts": "^3.0"
